@@ -20,10 +20,7 @@ public class Player : MonoBehaviour
         var inputHorizontal = Input.GetAxisRaw("Horizontal");
         var inputVertical = Input.GetAxisRaw("Vertical");
 
-        _body.MovePosition(
-            (Vector2)transform.position +
-            speed * Time.deltaTime * new Vector2(inputHorizontal, inputVertical)
-        );
+        _body.velocity = new Vector2(inputHorizontal * speed, inputVertical * speed);
 
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
