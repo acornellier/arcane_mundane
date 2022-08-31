@@ -1,71 +1,61 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform))]
 public class InventoryPanel : MonoBehaviour
 {
     [SerializeField] InventoryObject inventory;
+    [SerializeField] InventoryPanelSlot itemImagePrefab;
 
-    [SerializeField] Image itemImagePrefab;
-    [SerializeField] int columns;
-    [SerializeField] int rows;
+    RectTransform _rectTransform;
 
-    int _slotDimensions;
-
-    readonly List<Image> _items = new();
+    readonly Dictionary<Vector2Int, InventoryPanelSlot> _images = new();
 
     void Awake()
     {
-        var dimensions = GetComponent<RectTransform>().rect.width / columns;
-        _slotDimensions = (int)dimensions;
-        if (Mathf.Abs(dimensions - _slotDimensions) > 0.001)
-            Debug.LogError($"Dimensions not a round number: {dimensions}");
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     void Start()
     {
-        inventory.onItemAdded += Draw;
+        InitializeSize();
         Draw();
+        inventory.onChange += Draw;
     }
 
     void OnDisable()
     {
-        inventory.onItemAdded -= Draw;
+        inventory.onChange -= Draw;
+    }
+
+    void InitializeSize()
+    {
+        var imageRectTransform = itemImagePrefab.GetComponent<RectTransform>();
+        _rectTransform.sizeDelta = new Vector2(
+            inventory.Slots.GetLength(1) * imageRectTransform.rect.width,
+            inventory.Slots.GetLength(0) * imageRectTransform.rect.height
+        );
     }
 
     void Draw()
     {
-        foreach (var item in _items)
+        foreach (var image in _images.Values)
         {
-            Destroy(item.gameObject);
+            Destroy(image.gameObject);
         }
 
-        _items.Clear();
+        _images.Clear();
 
-        var row = 0;
-        var column = 0;
-
-        foreach (var item in inventory.container)
+        for (var row = 0; row < inventory.Slots.GetLength(0); ++row)
         {
-            if (column >= columns || row >= rows)
+            for (var column = 0; column < inventory.Slots.GetLength(1); ++column)
             {
-                Debug.LogError("Inventory full");
-                return;
-            }
+                var slot = inventory.Slots[row, column];
+                if (slot.IsEmpty) return;
 
-            var obj = Instantiate(itemImagePrefab, transform);
-            obj.sprite = item.sprite;
-            obj.rectTransform.anchoredPosition = new Vector2(
-                column * _slotDimensions,
-                row * _slotDimensions
-            );
-            _items.Add(obj);
-
-            column += 1;
-            if (column >= columns)
-            {
-                row += 1;
-                column = 0;
+                var panelSlot = Instantiate(itemImagePrefab, transform);
+                panelSlot.Initialize(slot, row, column);
+                _images.Add(new Vector2Int(row, column), panelSlot);
             }
         }
     }

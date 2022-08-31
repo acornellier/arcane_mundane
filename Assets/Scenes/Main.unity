@@ -170,7 +170,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.77666, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -296,7 +296,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 15.53125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -657,9 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: e0e079610cfdb014b838a9cb96a6ee09, type: 2}
-  itemImagePrefab: {fileID: 2649315749001496300, guid: ef963ebae22fc5d4bb70982c704c3617, type: 3}
-  columns: 4
-  rows: 4
+  itemImagePrefab: {fileID: 4184658257813976880, guid: ef963ebae22fc5d4bb70982c704c3617, type: 3}
 --- !u!1 &973689029
 GameObject:
   m_ObjectHideFlags: 3

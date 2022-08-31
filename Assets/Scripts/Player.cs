@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -23,6 +24,9 @@ public class Player : MonoBehaviour
             (Vector2)transform.position +
             speed * Time.deltaTime * new Vector2(inputHorizontal, inputVertical)
         );
+
+        if (Input.GetKeyDown(KeyCode.R))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -36,6 +40,6 @@ public class Player : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        inventory.container.Clear();
+        inventory.ResetSlots();
     }
 }

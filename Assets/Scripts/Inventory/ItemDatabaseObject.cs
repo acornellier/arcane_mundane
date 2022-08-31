@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(
@@ -13,22 +12,18 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public Dictionary<ItemObject, int> ids = new();
 
-    [ContextMenu("Update ID's")]
-    public void UpdateID()
+    [ContextMenu("Update Ids")]
+    public void UpdateIds()
     {
         for (var i = 0; i < items.Length; i++)
         {
-            if (items[i].data.Id != i)
-                items[i].data.Id = i;
+            // items[i].id = i;
         }
     }
 
     public void OnBeforeSerialize()
     {
-        ids = items.Select((item, index) => (item, index)).ToDictionary(
-            x => x.item,
-            x => x.index
-        );
+        UpdateIds();
     }
 
     public void OnAfterDeserialize()
