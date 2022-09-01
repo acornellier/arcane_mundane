@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
-  m_Name: Banana
+  m_Script: {fileID: 11500000, guid: 92e9099dba1c24dcda700fa19b64a47b, type: 3}
+  m_Name: Ray Gun
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300000, guid: 6db98145e4983fb48a75aa3a0ec6e366, type: 3}
+  _sprite: {fileID: 21300000, guid: 4f666dd4618814d2f8c5a2599cd224c7, type: 3}
   _shape:
-    _width: 1
-    _height: 1
-    _shape: 01
-  _description: 
+    _width: 2
+    _height: 2
+    _shape: 01010001
+  _type: 1
+  _canDrop: 0
+  _position: {x: 0, y: 0}

@@ -3,11 +3,11 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
-    public ItemObject item;
+    public ItemObject _item;
 
     void OnValidate()
     {
-        if (item)
-            gameObject.GetComponent<SpriteRenderer>().sprite = item.sprite;
+        if (_item)
+            gameObject.GetComponent<SpriteRenderer>().sprite = _item.sprite;
     }
 }

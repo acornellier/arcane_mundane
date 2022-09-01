@@ -154,8 +154,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ac38190185dec04c966dc47335c6629
+      spriteID: d11707c7f396dba45a3dd9602a1377cd
       internalID: -1260075047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InventorySlot_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f44739c1bbcfb94bb85cba25691d06b
+      internalID: -2080984742
       vertices: []
       indices: 
       edges: []
@@ -172,6 +193,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       InventorySlot_1: -1260075047
+      InventorySlot_2: -2080984742
       InventorySlot_0: 1566064961
   spritePackingTag: 
   pSDRemoveMatte: 0

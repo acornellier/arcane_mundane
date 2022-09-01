@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 10783390905b2e440aa38a51108fcc5c, type: 3}
-  dimensions: {x: 1, y: 1}
-  description: A fleshy fruit, in which the ripened ovary and surrounding tissue
-    both become fleshy and edible.
+  _sprite: {fileID: 21300000, guid: 10783390905b2e440aa38a51108fcc5c, type: 3}
+  _shape:
+    _width: 1
+    _height: 1
+    _shape: 01
+  _description: 
