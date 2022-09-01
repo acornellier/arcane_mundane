@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
-  m_Name: Banana
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 6db98145e4983fb48a75aa3a0ec6e366, type: 3}
-  dimensions: {x: 1, y: 1}
-  description: An elongated usually tapering tropical fruit with soft pulpy flesh
-    enclosed in a soft usually yellow rind.
+  sprite: {fileID: 21300000, guid: 0dd9ab1101d106a4cbc2d5a9a9af8195, type: 3}
+  dimensions: {x: 1, y: 2}
+  description: Slice n' Dice.

@@ -62,7 +62,6 @@ public class InventoryPanel : MonoBehaviour
 
     public void Swap(InventoryPanelSlot panelSlot1, InventoryPanelSlot panelSlot2)
     {
-        (panelSlot1.Slot.item, panelSlot2.Slot.item) = (panelSlot2.Slot.item, panelSlot1.Slot.item);
-        Draw();
+        inventory.SwapSlots(panelSlot1.Slot, panelSlot2.Slot);
     }
 }

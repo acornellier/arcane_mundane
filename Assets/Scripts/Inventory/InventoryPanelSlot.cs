@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler, IBeginDragHandler,
     IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] Image container;
-    [SerializeField] Image icon;
-    [SerializeField] Sprite containerHighlightedSprite;
+    [SerializeField] Image _container;
+    [SerializeField] Image _icon;
+    [SerializeField] Sprite _containerHighlightedSprite;
 
     Sprite _containerDefaultSprite;
 
@@ -28,7 +28,7 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
 
     void Awake()
     {
-        _containerDefaultSprite = container.sprite;
+        _containerDefaultSprite = _container.sprite;
     }
 
     public void Initialize(InventoryPanel inventoryPanel, InventorySlot inventorySlot)
@@ -42,19 +42,19 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
 
     void ResetPosition()
     {
-        icon.rectTransform.anchoredPosition = Vector2.zero;
+        _icon.rectTransform.anchoredPosition = Vector2.zero;
     }
 
     void UpdateImage()
     {
         if (Slot.item)
         {
-            icon.sprite = Slot.item.sprite;
-            icon.enabled = true;
+            _icon.sprite = Slot.item.sprite;
+            _icon.enabled = true;
         }
         else
         {
-            icon.enabled = false;
+            _icon.enabled = false;
         }
     }
 
@@ -65,10 +65,10 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!icon.enabled) return;
+        if (!_icon.enabled) return;
 
-        icon.GetComponent<Canvas>().overrideSorting = true;
-        icon.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        _icon.GetComponent<Canvas>().overrideSorting = true;
+        _icon.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
         _mouseOffset = default;
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
@@ -77,7 +77,7 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
                 eventData.pressEventCamera,
                 out var globalMousePos
             ))
-            _mouseOffset = icon.rectTransform.position - globalMousePos;
+            _mouseOffset = _icon.rectTransform.position - globalMousePos;
 
         SetDraggedPosition(eventData);
     }
@@ -95,13 +95,13 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
                 eventData.pressEventCamera,
                 out var globalMousePos
             ))
-            icon.rectTransform.position = globalMousePos + _mouseOffset;
+            _icon.rectTransform.position = globalMousePos + _mouseOffset;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        icon.GetComponent<Canvas>().overrideSorting = false;
-        icon.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        _icon.GetComponent<Canvas>().overrideSorting = false;
+        _icon.GetComponent<CanvasGroup>().blocksRaycasts = true;
         ResetPosition();
     }
 
@@ -118,11 +118,11 @@ public class InventoryPanelSlot : MonoBehaviour, IInitializePotentialDragHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        container.sprite = containerHighlightedSprite;
+        _container.sprite = _containerHighlightedSprite;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        container.sprite = _containerDefaultSprite;
+        _container.sprite = _containerDefaultSprite;
     }
 }

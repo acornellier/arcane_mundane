@@ -6,7 +6,8 @@ using UnityEngine;
 public class InventorySlot
 {
     public ItemObject item;
-    public bool IsEmpty => item == null;
+    public InventorySlot parent;
+    public bool IsEmpty => item == null && parent == null;
 }
 
 [CreateAssetMenu(fileName = "InventoryObject", menuName = "Inventory/InventoryObject", order = 0)]
@@ -41,6 +42,12 @@ public class InventoryObject : ScriptableObject
     InventorySlot FindEmptySlot()
     {
         return Slots.Cast<InventorySlot>().FirstOrDefault(slot => slot.IsEmpty);
+    }
+
+    public void SwapSlots(InventorySlot slot1, InventorySlot slot2)
+    {
+        (slot1.item, slot2.item) = (slot2.item, slot1.item);
+        onChange?.Invoke();
     }
 
     public void ResetSlots()

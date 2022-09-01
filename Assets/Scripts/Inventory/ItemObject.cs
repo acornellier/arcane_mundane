@@ -4,5 +4,6 @@
 public class ItemObject : ScriptableObject
 {
     public Sprite sprite;
-    [TextArea(15, 20)] public string description;
+    public Vector2Int dimensions = Vector2Int.one;
+    [TextArea(5, 20)] public string description;
 }
