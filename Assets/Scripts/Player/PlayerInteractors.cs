@@ -8,7 +8,7 @@ public class PlayerInteractors : MonoBehaviour
 
     PlayerInteractor _currentInteractor;
 
-    public bool canInteract => _currentInteractor.hasInteractable;
+    public Interactable currentInteractable => _currentInteractor.current;
 
     void Awake()
     {

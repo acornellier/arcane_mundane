@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
@@ -10,14 +7,15 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float _speed = 5;
     [SerializeField] int _maxStackSize = 3;
-    [SerializeField] Item itemPrefab;
 
     [SerializeField] PlayerInteractors _interactors;
+    [SerializeField] PlayerStack _itemStack;
+
+    public bool canPickUpItem => _itemStack.count < _maxStackSize;
 
     PlayerInputActions.PlayerActions _actions;
     Rigidbody2D _body;
 
-    readonly Stack<ItemObject> _itemStack = new();
     Vector2 _facingDirection = Vector2.up;
 
     void Awake()
@@ -49,12 +47,11 @@ public class Player : MonoBehaviour
         UpdateDirection();
     }
 
-    public bool PickUpItem(ItemObject item)
+    public void PickUpItem(Item item)
     {
-        if (_itemStack.Count() >= _maxStackSize) return false;
+        if (!canPickUpItem) return;
 
         _itemStack.Push(item);
-        return true;
     }
 
     void OnInteract(InputAction.CallbackContext _)
@@ -64,11 +61,16 @@ public class Player : MonoBehaviour
 
     void OnDrop(InputAction.CallbackContext _)
     {
-        if (!_itemStack.Any()) return;
+        if (_itemStack.count <= 0) return;
 
-        var dropPosition = transform.position + (Vector3)_facingDirection;
-        var obj = Instantiate(itemPrefab, dropPosition, Quaternion.identity);
-        obj.Initialize(_itemStack.Pop());
+        if (_interactors.currentInteractable != null &&
+            _interactors.currentInteractable.TryGetComponent(out ItemStack groundStack))
+        {
+            _itemStack.MoveTo(groundStack);
+            return;
+        }
+
+        _itemStack.DropAt(transform.position + (Vector3)_facingDirection);
     }
 
     void UpdateMovement()
@@ -86,7 +88,7 @@ public class Player : MonoBehaviour
         if (moveInput == default || moveInput == _facingDirection)
             return;
 
-        _facingDirection = moveInput;
+        _facingDirection = moveInput.y == 0 ? moveInput : new Vector2(0, moveInput.y);
 
         if ((moveInput.x < 0 && transform.localScale.x > 0) ||
             (moveInput.x > 0 && transform.localScale.x < 0))

@@ -1,41 +1,48 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteractor : MonoBehaviour
 {
-    IInteractable _interactable;
+    readonly List<Interactable> _list = new();
 
-    public bool hasInteractable => _interactable != null;
+    public Interactable current => _list.FirstOrDefault();
 
     void OnDisable()
     {
-        _interactable?.Unhighlight();
+        _list.FirstOrDefault()?.Unhighlight();
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (_interactable != null) return;
+        var interactable = col.GetComponent<Interactable>();
+        if (interactable == null) return;
 
-        var interactable = col.GetComponent<IInteractable>();
-        if (interactable != null)
-        {
-            _interactable = interactable;
-            _interactable.Highlight();
-        }
+        _list.Add(interactable);
+        if (_list.Count == 1)
+            interactable.Highlight();
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        var interactable = col.GetComponent<IInteractable>();
-        if (interactable == _interactable)
+        var interactable = col.GetComponent<Interactable>();
+
+        var index = _list.IndexOf(interactable);
+        if (index == -1) return;
+
+        if (index == 0)
         {
-            _interactable?.Unhighlight();
-            _interactable = null;
+            _list[index].Unhighlight();
+            if (_list.Count > 1)
+                _list[1].Highlight();
         }
+
+        _list.RemoveAt(index);
     }
 
     public void Interact()
     {
-        _interactable?.Interact();
+        _list.FirstOrDefault()?.Interact();
     }
 }
