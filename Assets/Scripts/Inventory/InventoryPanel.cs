@@ -7,6 +7,6 @@ public class InventoryPanel : MonoBehaviour
     void Start()
     {
         var player = FindObjectOfType<Player>();
-        GetComponent<InventoryRenderer>().SetInventory(player.inventory);
+        // GetComponent<InventoryRenderer>().SetInventory(player.inventory);
     }
 }

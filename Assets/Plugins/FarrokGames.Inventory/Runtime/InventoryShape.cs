@@ -12,7 +12,8 @@ namespace FarrokhGames.Inventory
     {
         [SerializeField] int _width;
         [SerializeField] int _height;
-        [SerializeField] bool[] _shape;
+
+        // [SerializeField] bool[] _shape;
 
         /// <summary>
         /// CTOR
@@ -23,7 +24,7 @@ namespace FarrokhGames.Inventory
         {
             _width = width;
             _height = height;
-            _shape = Enumerable.Repeat(true, _width * _height).ToArray();
+            // _shape = new bool[_width * _height];
         }
 
         /// <summary>
@@ -34,14 +35,14 @@ namespace FarrokhGames.Inventory
         {
             _width = shape.GetLength(0);
             _height = shape.GetLength(1);
-            _shape = new bool[_width * _height];
-            for (var x = 0; x < _width; x++)
-            {
-                for (var y = 0; y < _height; y++)
-                {
-                    _shape[GetIndex(x, y)] = shape[x, y];
-                }
-            }
+            // _shape = new bool[_width * _height];
+            // for (var x = 0; x < _width; x++)
+            // {
+            //     for (var y = 0; y < _height; y++)
+            //     {
+            //         _shape[GetIndex(x, y)] = shape[x, y];
+            //     }
+            // }
         }
 
         /// <summary>
@@ -63,8 +64,9 @@ namespace FarrokhGames.Inventory
                 localPoint.y >= _height)
                 return false; // outside of shape width/height
 
-            var index = GetIndex(localPoint.x, localPoint.y);
-            return _shape[index];
+            return true;
+            // var index = GetIndex(localPoint.x, localPoint.y);
+            // return _shape[index];
         }
 
         /*
