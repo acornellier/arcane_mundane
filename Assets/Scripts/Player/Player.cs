@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Animancer;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,7 +9,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] float _speed = 5;
+    [SerializeField] float _speed = 7;
+    [SerializeField] float _stackSpeedPercentReduction = 0.1f;
     [SerializeField] int _maxStackSize = 3;
 
     [SerializeField] PlayerInteractors _interactors;
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
     {
         _actions.Interact.performed += OnInteract;
         _actions.Drop.performed += OnDrop;
+        _actions.HardDrop.performed += OnHardDrop;
         _actions.Enable();
     }
 
@@ -70,21 +73,37 @@ public class Player : MonoBehaviour
     {
         if (_itemStack.count <= 0) return;
 
+        Drop();
+    }
+
+    bool Drop()
+    {
         if (_interactors.currentInteractable != null &&
             _interactors.currentInteractable.TryGetComponent(out ItemStack groundStack))
-        {
-            _itemStack.MoveTo(groundStack);
-            return;
-        }
+            return _itemStack.MoveTo(groundStack);
 
-        _itemStack.DropAt(transform.position + (Vector3)_facingDirection);
+        return _itemStack.DropAt(transform.position + (Vector3)_facingDirection);
+    }
+
+    void OnHardDrop(InputAction.CallbackContext _)
+    {
+        StartCoroutine(CO_HardDrop());
+    }
+
+    IEnumerator CO_HardDrop()
+    {
+        while (Drop())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     void UpdateMovement()
     {
         var moveInput = _actions.Move.ReadValue<Vector2>();
+        var adjustedSpeed = _speed - _stackSpeedPercentReduction * _speed * _itemStack.count;
         var newPosition =
-            (Vector2)transform.position + _speed * Time.fixedDeltaTime * moveInput;
+            (Vector2)transform.position + adjustedSpeed * Time.fixedDeltaTime * moveInput;
 
         _body.MovePosition(newPosition);
     }
@@ -106,12 +125,29 @@ public class Player : MonoBehaviour
 
     void UpdateAnimations()
     {
-        _animancer.Play(_animations.idle.GetClip(_facingDirection));
+        var directionalAnimationSet = GetDirectionalAnimationSet();
+        var state = _animancer.Play(directionalAnimationSet.GetClip(_facingDirection));
+        state.Speed = 1 - _itemStack.count * _stackSpeedPercentReduction;
+    }
+
+    DirectionalAnimationSet GetDirectionalAnimationSet()
+    {
+        var moveInput = _actions.Move.ReadValue<Vector2>();
+        return _itemStack.Any()
+            ? moveInput == default
+                ? _animations.carryIdle
+                : _animations.carryWalk
+            : moveInput == default
+                ? _animations.idle
+                : _animations.walk;
     }
 
     [Serializable]
     class Animations
     {
         public DirectionalAnimationSet idle;
+        public DirectionalAnimationSet walk;
+        public DirectionalAnimationSet carryIdle;
+        public DirectionalAnimationSet carryWalk;
     }
 }

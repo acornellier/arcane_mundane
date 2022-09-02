@@ -29,22 +29,29 @@ public class PlayerStack : MonoBehaviour
         _items.Push(item);
     }
 
-    public void DropAt(Vector3 position)
+    public bool DropAt(Vector3 position)
     {
-        if (_items.IsEmpty()) return;
+        if (_items.IsEmpty()) return false;
 
         var stack = ItemStack.FindAt(position);
         if (stack.isFull)
-            return;
+            return false;
 
         stack.Push(_items.Pop());
+        return true;
     }
 
-    public void MoveTo(ItemStack otherStack)
+    public bool MoveTo(ItemStack otherStack)
     {
-        if (_items.IsEmpty() || otherStack.isFull) return;
+        if (_items.IsEmpty() || otherStack.isFull) return false;
 
         var item = _items.Pop();
         otherStack.Push(item);
+        return true;
+    }
+
+    public bool Any()
+    {
+        return _items.Any();
     }
 }

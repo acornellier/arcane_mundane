@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eceeb59a892d074db28203df8e4cd3a, type: 3}
+  m_Name: Kobold_Walk
+  m_EditorClassIdentifier: 
+  _Up: {fileID: 7400000, guid: 5c7e636c382eacd47acff24ae9f4a23b, type: 2}
+  _Right: {fileID: 7400000, guid: 42c1453fad7adc74cb89a90c9dc950de, type: 2}
+  _Down: {fileID: 7400000, guid: b699947b75c2968448e5f05f0fad1840, type: 2}
+  _Left: {fileID: 7400000, guid: 42c1453fad7adc74cb89a90c9dc950de, type: 2}

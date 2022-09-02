@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
-  m_Name: Sword
+  m_Name: Amulet
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300000, guid: 0dd9ab1101d106a4cbc2d5a9a9af8195, type: 3}
+  _sprite: {fileID: 21300000, guid: c206be2857e4a344189cd70ba7b9632d, type: 3}
   _shape:
     _width: 1
     _height: 1

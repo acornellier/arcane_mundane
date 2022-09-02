@@ -7,6 +7,7 @@ using UnityEngine;
 public class ItemStack : Interactable
 {
     [SerializeField] float _spacing = 0.25f;
+    [SerializeField] int _maxSize = 3;
 
     public bool isFull => _items.Count >= _maxSize;
 
@@ -16,7 +17,6 @@ public class ItemStack : Interactable
 
     static readonly Collider2D[] _results = new Collider2D[32];
 
-    int _maxSize = 3;
     bool _isHighlighted;
     readonly Stack<Item> _items = new();
 
@@ -68,7 +68,7 @@ public class ItemStack : Interactable
 
         if (_items.IsEmpty())
             _collider.isTrigger = true;
-        
+
         if (_isHighlighted)
             Highlight();
     }
