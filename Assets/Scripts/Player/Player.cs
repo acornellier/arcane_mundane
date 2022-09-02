@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using Animancer;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -10,10 +13,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] PlayerInteractors _interactors;
     [SerializeField] PlayerStack _itemStack;
+    [SerializeField] Animations _animations;
 
     public bool canPickUpItem => _itemStack.count < _maxStackSize;
 
     PlayerInputActions.PlayerActions _actions;
+    AnimancerComponent _animancer;
     Rigidbody2D _body;
 
     Vector2 _facingDirection = Vector2.up;
@@ -21,6 +26,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         _actions = new PlayerInputActions().Player;
+        _animancer = GetComponent<AnimancerComponent>();
         _body = GetComponent<Rigidbody2D>();
     }
 
@@ -45,6 +51,7 @@ public class Player : MonoBehaviour
     {
         UpdateMovement();
         UpdateDirection();
+        UpdateAnimations();
     }
 
     public void PickUpItem(Item item)
@@ -95,5 +102,16 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
 
         _interactors.UpdateInteractor(_facingDirection);
+    }
+
+    void UpdateAnimations()
+    {
+        _animancer.Play(_animations.idle.GetClip(_facingDirection));
+    }
+
+    [Serializable]
+    class Animations
+    {
+        public DirectionalAnimationSet idle;
     }
 }

@@ -11,7 +11,8 @@ public class ItemStack : Interactable
     public bool isFull => _items.Count >= _maxSize;
 
     Player _player;
-    SpriteRenderer _spriteRenderer;
+    Collider2D _collider;
+    SpriteRenderer _renderer;
 
     static readonly Collider2D[] _results = new Collider2D[32];
 
@@ -22,7 +23,8 @@ public class ItemStack : Interactable
     void Awake()
     {
         _player = FindObjectOfType<Player>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -51,17 +53,22 @@ public class ItemStack : Interactable
                 _items.Peek().Unhighlight();
         }
 
+        _collider.isTrigger = false;
+
         _items.Push(item);
     }
 
     public override void Interact()
     {
-        if (!_items.Any() || !_player.canPickUpItem) return;
+        if (_items.IsEmpty() || !_player.canPickUpItem) return;
 
         var item = _items.Pop();
         item.Unhighlight();
         _player.PickUpItem(item);
 
+        if (_items.IsEmpty())
+            _collider.isTrigger = true;
+        
         if (_isHighlighted)
             Highlight();
     }
@@ -69,7 +76,7 @@ public class ItemStack : Interactable
     public override void Highlight()
     {
         _isHighlighted = true;
-        _spriteRenderer.enabled = true;
+        _renderer.enabled = true;
         if (_items.TryPeek(out var item))
             item.Highlight();
     }
@@ -77,7 +84,7 @@ public class ItemStack : Interactable
     public override void Unhighlight()
     {
         _isHighlighted = false;
-        _spriteRenderer.enabled = false;
+        _renderer.enabled = false;
         if (_items.TryPeek(out var item))
             item.Unhighlight();
     }

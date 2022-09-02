@@ -31,7 +31,7 @@ public class PlayerStack : MonoBehaviour
 
     public void DropAt(Vector3 position)
     {
-        if (!_items.Any()) return;
+        if (_items.IsEmpty()) return;
 
         var stack = ItemStack.FindAt(position);
         if (stack.isFull)
@@ -42,7 +42,7 @@ public class PlayerStack : MonoBehaviour
 
     public void MoveTo(ItemStack otherStack)
     {
-        if (!_items.Any() || otherStack.isFull) return;
+        if (_items.IsEmpty() || otherStack.isFull) return;
 
         var item = _items.Pop();
         otherStack.Push(item);
