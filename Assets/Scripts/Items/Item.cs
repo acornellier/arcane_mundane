@@ -3,12 +3,17 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
+    [SerializeField] float speed = 10;
+    [SerializeField] float verticalSpeed = 2;
+    [SerializeField] float gravity = -10;
+
     public ItemObject item;
 
     SpriteRenderer _spriteRenderer;
 
-    Vector2 _localDestination;
     bool _moving;
+    Vector2 _localDestination;
+    Vector2 _velocity;
 
     static readonly int _outlineThickness = Shader.PropertyToID("_OutlineThickness");
 
@@ -29,15 +34,25 @@ public class Item : MonoBehaviour
         Vector2 position = transform.localPosition;
         if (!_moving || position == _localDestination) return;
 
-        if (Vector2.Distance(position, _localDestination) < 0.1f)
+        var diff = _localDestination - position;
+        var xClose = Mathf.Abs(diff.x) < 0.1f;
+        var yClose = diff.y > -0.1f;
+
+        if (xClose && yClose)
         {
             transform.localPosition = _localDestination;
             _moving = false;
             return;
         }
 
-        var direction = _localDestination - position;
-        transform.position += (Vector3)(10 * Time.fixedDeltaTime * direction);
+        if (xClose)
+            _velocity.x = 0;
+
+        if (yClose)
+            _velocity.y = 0;
+
+        _velocity.y += gravity * Time.fixedDeltaTime;
+        transform.position += Time.fixedDeltaTime * (Vector3)_velocity;
     }
 
     public void Initialize(ItemObject itemObject)
@@ -60,6 +75,9 @@ public class Item : MonoBehaviour
     public void MoveToLocal(Vector2 localDestination)
     {
         _localDestination = localDestination;
+        var horizontalDistance = _localDestination.x - transform.localPosition.x;
+        _velocity.x = horizontalDistance / Time.fixedDeltaTime / speed;
+        _velocity.y = verticalSpeed;
         _moving = true;
     }
 

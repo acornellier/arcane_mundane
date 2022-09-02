@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Dragon : MonoBehaviour
+public class DragonDrop : MonoBehaviour
 {
     [SerializeField] ItemObjectList _allItems;
     [SerializeField] Item _itemPrefab;
@@ -52,6 +52,7 @@ public class Dragon : MonoBehaviour
             if (stack.isFull)
                 continue;
 
+            item.transform.position = stack.transform.position + new Vector3(0, 2);
             stack.Push(item);
             return;
         }

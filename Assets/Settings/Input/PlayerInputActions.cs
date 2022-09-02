@@ -62,6 +62,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reveal"",
+                    ""type"": ""Button"",
+                    ""id"": ""21a33bc2-15d1-47ce-9f9a-3ea8016cbe92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -249,6 +258,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""HardDrop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3210012c-a799-49ec-a993-a53786a77695"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Reveal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -840,6 +860,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_HardDrop = m_Player.FindAction("HardDrop", throwIfNotFound: true);
+        m_Player_Reveal = m_Player.FindAction("Reveal", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -915,6 +936,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_HardDrop;
+    private readonly InputAction m_Player_Reveal;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -923,6 +945,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Drop => m_Wrapper.m_Player_Drop;
         public InputAction @HardDrop => m_Wrapper.m_Player_HardDrop;
+        public InputAction @Reveal => m_Wrapper.m_Player_Reveal;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -944,6 +967,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @HardDrop.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHardDrop;
                 @HardDrop.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHardDrop;
                 @HardDrop.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHardDrop;
+                @Reveal.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReveal;
+                @Reveal.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReveal;
+                @Reveal.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReveal;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -960,6 +986,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @HardDrop.started += instance.OnHardDrop;
                 @HardDrop.performed += instance.OnHardDrop;
                 @HardDrop.canceled += instance.OnHardDrop;
+                @Reveal.started += instance.OnReveal;
+                @Reveal.performed += instance.OnReveal;
+                @Reveal.canceled += instance.OnReveal;
             }
         }
     }
@@ -1120,6 +1149,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnHardDrop(InputAction.CallbackContext context);
+        void OnReveal(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

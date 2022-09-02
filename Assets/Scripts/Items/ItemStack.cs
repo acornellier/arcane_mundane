@@ -13,6 +13,7 @@ public class ItemStack : Interactable
     public bool isFull => _items.Count >= _maxSize;
 
     Player _player;
+    PlayerController _playerController;
     Collider2D _collider;
     SpriteRenderer _renderer;
 
@@ -24,8 +25,19 @@ public class ItemStack : Interactable
     void Awake()
     {
         _player = FindObjectOfType<Player>();
+        _playerController = FindObjectOfType<PlayerController>();
         _collider = GetComponent<Collider2D>();
         _renderer = GetComponent<SpriteRenderer>();
+    }
+
+    void OnEnable()
+    {
+        _playerController.onReveal += SetUnderneathAlpha;
+    }
+
+    void OnDisable()
+    {
+        _playerController.onReveal -= SetUnderneathAlpha;
     }
 
     void Start()
@@ -57,8 +69,6 @@ public class ItemStack : Interactable
         _collider.isTrigger = false;
 
         _items.Push(item);
-
-        SetAlpha();
     }
 
     public override void Interact()
@@ -74,8 +84,6 @@ public class ItemStack : Interactable
 
         if (_isHighlighted)
             Highlight();
-
-        SetAlpha();
     }
 
     public override void Highlight()
@@ -107,14 +115,14 @@ public class ItemStack : Interactable
         return null;
     }
 
-    void SetAlpha()
+    void SetUnderneathAlpha(bool reveal)
     {
         var first = true;
         foreach (var item in _items)
         {
             var spriteRenderer = item.GetComponent<SpriteRenderer>();
             var color = spriteRenderer.color;
-            color.a = first ? 1 : _underneathAlpha;
+            color.a = first || !reveal ? 1 : _underneathAlpha;
             spriteRenderer.color = color;
             first = false;
         }

@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6521edf6839d43c8b93bcffc1bfa4975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stackPrefab: {fileID: 4178754615002689127, guid: a41c80328fe207349b614e42f841a793, type: 3}
+  speed: 10
+  verticalSpeed: 3
+  gravity: -50
   item: {fileID: 0}
 --- !u!212 &2039750564938712322
 SpriteRenderer:
@@ -87,7 +89,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -812120529
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
