@@ -7,6 +7,9 @@ public class Item : MonoBehaviour
 
     SpriteRenderer _spriteRenderer;
 
+    Vector2 _localDestination;
+    bool _moving;
+
     static readonly int _outlineThickness = Shader.PropertyToID("_OutlineThickness");
 
     void Awake()
@@ -19,6 +22,22 @@ public class Item : MonoBehaviour
     void OnValidate()
     {
         UpdateItemData();
+    }
+
+    void FixedUpdate()
+    {
+        Vector2 position = transform.localPosition;
+        if (!_moving || position == _localDestination) return;
+
+        if (Vector2.Distance(position, _localDestination) < 0.1f)
+        {
+            transform.localPosition = _localDestination;
+            _moving = false;
+            return;
+        }
+
+        var direction = _localDestination - position;
+        transform.position += (Vector3)(10 * Time.fixedDeltaTime * direction);
     }
 
     public void Initialize(ItemObject itemObject)
@@ -36,6 +55,12 @@ public class Item : MonoBehaviour
     {
         if (_spriteRenderer)
             _spriteRenderer.material.SetFloat(_outlineThickness, 0);
+    }
+
+    public void MoveToLocal(Vector2 localDestination)
+    {
+        _localDestination = localDestination;
+        _moving = true;
     }
 
     void UpdateItemData()

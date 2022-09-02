@@ -8,6 +8,7 @@ public class ItemStack : Interactable
 {
     [SerializeField] float _spacing = 0.25f;
     [SerializeField] int _maxSize = 3;
+    [SerializeField] float _underneathAlpha = 0.7f;
 
     public bool isFull => _items.Count >= _maxSize;
 
@@ -42,8 +43,8 @@ public class ItemStack : Interactable
     {
         if (isFull) return;
 
-        item.transform.SetParent(transform, false);
-        item.transform.localPosition = Vector3.zero + _items.Count * _spacing * Vector3.up;
+        item.transform.SetParent(transform);
+        item.MoveToLocal(Vector2.zero + _items.Count * _spacing * Vector2.up);
         item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
 
         if (_isHighlighted)
@@ -56,6 +57,8 @@ public class ItemStack : Interactable
         _collider.isTrigger = false;
 
         _items.Push(item);
+
+        SetAlpha();
     }
 
     public override void Interact()
@@ -71,6 +74,8 @@ public class ItemStack : Interactable
 
         if (_isHighlighted)
             Highlight();
+
+        SetAlpha();
     }
 
     public override void Highlight()
@@ -100,5 +105,18 @@ public class ItemStack : Interactable
         }
 
         return null;
+    }
+
+    void SetAlpha()
+    {
+        var first = true;
+        foreach (var item in _items)
+        {
+            var spriteRenderer = item.GetComponent<SpriteRenderer>();
+            var color = spriteRenderer.color;
+            color.a = first ? 1 : _underneathAlpha;
+            spriteRenderer.color = color;
+            first = false;
+        }
     }
 }

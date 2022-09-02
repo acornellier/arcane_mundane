@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spacing: 0.25
+  _maxSize: 3
+  _underneathAlpha: 0.8
 --- !u!61 &4178754615002689124
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -113,7 +115,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -812120529
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 47cb66984727a804cb7ba0bedb3308fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,6 +137,6 @@ SortingGroup:
   m_GameObject: {fileID: 4178754615002689125}
   m_Enabled: 1
   m_SortingLayerID: -812120529
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_SortAtRoot: 0
