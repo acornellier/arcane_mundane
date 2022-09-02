@@ -33,8 +33,11 @@ public class PlayerStack : MonoBehaviour
     {
         if (!_items.Any()) return;
 
-        var item = _items.Pop();
-        item.DropAt(position);
+        var stack = ItemStack.FindAt(position);
+        if (stack.isFull)
+            return;
+
+        stack.Push(_items.Pop());
     }
 
     public void MoveTo(ItemStack otherStack)

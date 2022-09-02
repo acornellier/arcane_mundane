@@ -3,17 +3,16 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
-    [SerializeField] ItemStack stackPrefab;
-
     public ItemObject item;
 
     SpriteRenderer _spriteRenderer;
 
-    static readonly Collider2D[] _results = new Collider2D[32];
+    static readonly int _outlineThickness = Shader.PropertyToID("_OutlineThickness");
 
     void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.material = new Material(_spriteRenderer.material);
         UpdateItemData();
     }
 
@@ -22,21 +21,21 @@ public class Item : MonoBehaviour
         UpdateItemData();
     }
 
-    public void DropAt(Vector3 position)
+    public void Initialize(ItemObject itemObject)
     {
-        var stack = FindOrCreateStackAt(position);
-        stack.Push(this);
+        item = itemObject;
+        UpdateItemData();
     }
 
     public void Highlight()
     {
-        _spriteRenderer.color = Color.green;
+        _spriteRenderer.material.SetFloat(_outlineThickness, 1);
     }
 
     public void Unhighlight()
     {
         if (_spriteRenderer)
-            _spriteRenderer.color = Color.white;
+            _spriteRenderer.material.SetFloat(_outlineThickness, 0);
     }
 
     void UpdateItemData()
@@ -45,19 +44,5 @@ public class Item : MonoBehaviour
 
         name = item.Name;
         GetComponent<SpriteRenderer>().sprite = item.sprite;
-    }
-
-    ItemStack FindOrCreateStackAt(Vector3 position)
-    {
-        var size = Physics2D.OverlapPointNonAlloc(position, _results);
-
-        for (var i = 0; i < size; ++i)
-        {
-            if (_results[i].TryGetComponent<ItemStack>(out var itemStack))
-                return itemStack;
-        }
-
-        var newStack = Instantiate(stackPrefab, position, Quaternion.identity);
-        return newStack;
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class ItemStack : Interactable
 {
     [SerializeField] float _spacing = 0.25f;
@@ -10,6 +11,9 @@ public class ItemStack : Interactable
     public bool isFull => _items.Count >= _maxSize;
 
     Player _player;
+    SpriteRenderer _spriteRenderer;
+
+    static readonly Collider2D[] _results = new Collider2D[32];
 
     int _maxSize = 3;
     bool _isHighlighted;
@@ -18,6 +22,7 @@ public class ItemStack : Interactable
     void Awake()
     {
         _player = FindObjectOfType<Player>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -57,12 +62,6 @@ public class ItemStack : Interactable
         item.Unhighlight();
         _player.PickUpItem(item);
 
-        if (!_items.Any())
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         if (_isHighlighted)
             Highlight();
     }
@@ -70,6 +69,7 @@ public class ItemStack : Interactable
     public override void Highlight()
     {
         _isHighlighted = true;
+        _spriteRenderer.enabled = true;
         if (_items.TryPeek(out var item))
             item.Highlight();
     }
@@ -77,7 +77,21 @@ public class ItemStack : Interactable
     public override void Unhighlight()
     {
         _isHighlighted = false;
+        _spriteRenderer.enabled = false;
         if (_items.TryPeek(out var item))
             item.Unhighlight();
+    }
+
+    public static ItemStack FindAt(Vector3 position)
+    {
+        var size = Physics2D.OverlapPointNonAlloc(position, _results);
+
+        for (var i = 0; i < size; ++i)
+        {
+            if (_results[i].TryGetComponent<ItemStack>(out var itemStack))
+                return itemStack;
+        }
+
+        return null;
     }
 }

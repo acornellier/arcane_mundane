@@ -16,7 +16,7 @@ namespace FarrokhGames.Inventory
             // Find properties
             var pWidth = property.FindPropertyRelative("_width");
             var pHeight = property.FindPropertyRelative("_height");
-            var pShape = property.FindPropertyRelative("_shape");
+            // var pShape = property.FindPropertyRelative("_shape");
 
             // Clamp height & width
             if (pWidth.intValue <= 0)
@@ -51,25 +51,25 @@ namespace FarrokhGames.Inventory
             // Draw grid
             var width = pWidth.intValue;
             var height = pHeight.intValue;
-            pShape.arraySize = width * height;
-            for (var x = 0; x < width; x++)
-            {
-                for (var y = 0; y < height; y++)
-                {
-                    var index = x + width * y;
-                    var rect = new Rect(
-                        position.x + x * GridSize,
-                        position.y + GridSize + y * GridSize,
-                        GridSize,
-                        GridSize
-                    );
-                    EditorGUI.PropertyField(
-                        rect,
-                        pShape.GetArrayElementAtIndex(index),
-                        GUIContent.none
-                    );
-                }
-            }
+            // pShape.arraySize = width * height;
+            // for (var x = 0; x < width; x++)
+            // {
+            //     for (var y = 0; y < height; y++)
+            //     {
+            //         var index = x + width * y;
+            //         var rect = new Rect(
+            //             position.x + x * GridSize,
+            //             position.y + GridSize + y * GridSize,
+            //             GridSize,
+            //             GridSize
+            //         );
+            //         EditorGUI.PropertyField(
+            //             rect,
+            //             pShape.GetArrayElementAtIndex(index),
+            //             GUIContent.none
+            //         );
+            //     }
+            // }
 
             // Set indent back to what it was
             EditorGUI.indentLevel = indent;

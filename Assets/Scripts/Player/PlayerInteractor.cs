@@ -1,17 +1,47 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using MoreLinq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteractor : MonoBehaviour
 {
-    readonly List<Interactable> _list = new();
+    readonly HashSet<Interactable> _list = new();
 
-    public Interactable current => _list.FirstOrDefault();
+    public Interactable current { get; private set; }
+
+    Vector3 _lastPosition;
+    bool _changed;
+
+    void OnEnable()
+    {
+        if (current)
+            current.Highlight();
+    }
 
     void OnDisable()
     {
-        _list.FirstOrDefault()?.Unhighlight();
+        if (current)
+            current.Unhighlight();
+    }
+
+    void Update()
+    {
+        if (!_changed && transform.position == _lastPosition)
+            return;
+
+        _changed = false;
+        _lastPosition = transform.position;
+
+        var nearest = NearestInteractable();
+        if (nearest == current) return;
+
+        if (current)
+            current.Unhighlight();
+
+        if (nearest)
+            nearest.Highlight();
+
+        current = nearest;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -19,30 +49,33 @@ public class PlayerInteractor : MonoBehaviour
         var interactable = col.GetComponent<Interactable>();
         if (interactable == null) return;
 
-        _list.Add(interactable);
-        if (_list.Count == 1)
-            interactable.Highlight();
+        if (_list.Add(interactable))
+            _changed = true;
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
         var interactable = col.GetComponent<Interactable>();
 
-        var index = _list.IndexOf(interactable);
-        if (index == -1) return;
-
-        if (index == 0)
-        {
-            _list[index].Unhighlight();
-            if (_list.Count > 1)
-                _list[1].Highlight();
-        }
-
-        _list.RemoveAt(index);
+        if (_list.Remove(interactable))
+            _changed = true;
     }
 
     public void Interact()
     {
-        _list.FirstOrDefault()?.Interact();
+        if (current)
+            current.Interact();
+    }
+
+    Interactable NearestInteractable()
+    {
+        if (_list.IsEmpty()) return null;
+
+        return _list.MinBy(
+            interactable => Vector2.Distance(
+                transform.position,
+                interactable.transform.position
+            )
+        ).First();
     }
 }
