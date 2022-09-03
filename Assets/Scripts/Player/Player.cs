@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] float _stackSpeedPercentReduction = 0.1f;
     [SerializeField] int _maxStackSize = 3;
 
+    [SerializeField] PlayerAudio _audio;
     [SerializeField] PlayerInteractors _interactors;
     [SerializeField] PlayerStack _itemStack;
     [SerializeField] Animations _animations;
@@ -58,6 +59,11 @@ public class Player : MonoBehaviour
         UpdateAnimations();
     }
 
+    public void Footstep()
+    {
+        _audio.Footstep();
+    }
+
     public void PickUpItem(Item item)
     {
         if (!canPickUpItem) return;
@@ -88,7 +94,8 @@ public class Player : MonoBehaviour
             _interactors.currentInteractable.TryGetComponent(out ItemStack groundStack))
             return _itemStack.MoveTo(groundStack);
 
-        return _itemStack.DropAt(transform.position + (Vector3)_facingDirection);
+        return false;
+        // return _itemStack.DropAt(transform.position + (Vector3)_facingDirection);
     }
 
     void OnHardDrop(InputAction.CallbackContext _)
@@ -124,7 +131,10 @@ public class Player : MonoBehaviour
 
         if ((moveInput.x < 0 && transform.localScale.x > 0) ||
             (moveInput.x > 0 && transform.localScale.x < 0))
+        {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            _itemStack.transform.localScale = transform.localScale;
+        }
 
         _interactors.UpdateInteractor(_facingDirection);
     }

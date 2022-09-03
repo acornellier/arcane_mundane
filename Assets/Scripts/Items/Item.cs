@@ -7,12 +7,15 @@ public class Item : MonoBehaviour
     [SerializeField] float verticalSpeed = 2;
     [SerializeField] float gravity = -10;
 
+    [SerializeField] AudioSource putDownSource;
+    [SerializeField] AudioClip putDownClip;
+
     public ItemObject item;
 
     SpriteRenderer _spriteRenderer;
 
     bool _moving;
-    Vector2 _localDestination;
+    Vector2 _destination;
     Vector2 _velocity;
 
     static readonly int _outlineThickness = Shader.PropertyToID("_OutlineThickness");
@@ -31,17 +34,18 @@ public class Item : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 position = transform.localPosition;
-        if (!_moving || position == _localDestination) return;
+        Vector2 position = transform.position;
+        if (!_moving || position == _destination) return;
 
-        var diff = _localDestination - position;
+        var diff = _destination - position;
         var xClose = Mathf.Abs(diff.x) < 0.1f;
         var yClose = diff.y > -0.1f;
 
         if (xClose && yClose)
         {
-            transform.localPosition = _localDestination;
+            transform.position = _destination;
             _moving = false;
+            putDownSource.PlayOneShot(putDownClip);
             return;
         }
 
@@ -72,13 +76,18 @@ public class Item : MonoBehaviour
             _spriteRenderer.material.SetFloat(_outlineThickness, 0);
     }
 
-    public void MoveToLocal(Vector2 localDestination)
+    public void MoveTo(Vector2 destination)
     {
-        _localDestination = localDestination;
-        var horizontalDistance = _localDestination.x - transform.localPosition.x;
+        _destination = destination;
+        var horizontalDistance = _destination.x - transform.position.x;
         _velocity.x = horizontalDistance / Time.fixedDeltaTime / speed;
         _velocity.y = verticalSpeed;
         _moving = true;
+    }
+
+    public void StopMoving()
+    {
+        _moving = false;
     }
 
     void UpdateItemData()

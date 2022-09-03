@@ -6,6 +6,9 @@ public class PlayerStack : MonoBehaviour
 {
     [SerializeField] float spacing = 0.25f;
 
+    [SerializeField] AudioSource pickUpSource;
+    [SerializeField] AudioClip pickUpClip;
+
     public int count => _items.Count;
 
     bool _isHighlighted;
@@ -22,11 +25,14 @@ public class PlayerStack : MonoBehaviour
 
     public void Push(Item item)
     {
+        item.StopMoving();
         item.transform.SetParent(transform, false);
         item.transform.localPosition = Vector3.zero + _items.Count * spacing * Vector3.up;
         item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
 
         _items.Push(item);
+
+        pickUpSource.PlayOneShot(pickUpClip);
     }
 
     public bool DropAt(Vector3 position)
@@ -64,6 +70,8 @@ public class PlayerStack : MonoBehaviour
     public void DestroyTop()
     {
         if (_items.TryPop(out var item))
+            // item.transform.SetParent(null);
+            // item.MoveToLocal(Vector2.zero + _items.Count * _spacing * Vector2.up);
             Destroy(item.gameObject);
     }
 }

@@ -56,7 +56,7 @@ public class ItemStack : Interactable
         if (isFull) return;
 
         item.transform.SetParent(transform);
-        item.MoveToLocal(Vector2.zero + _items.Count * _spacing * Vector2.up);
+        item.MoveTo((Vector2)transform.position + _items.Count * _spacing * Vector2.up);
         item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
 
         if (_isHighlighted)
