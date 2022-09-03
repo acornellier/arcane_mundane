@@ -685,6 +685,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: kobod_walk_carry_27
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 64
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.65625, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6584131ee749bf4282a0f9ad63c6b6f
+      internalID: 1551724991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kobod_walk_carry_28
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68ab6dcb9dbad6f41a35adb3969dc344
+      internalID: 217363691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kobod_walk_carry_29
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54e4a0698b02ab74d8bb5df28e2a1976
+      internalID: -920251488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -698,7 +761,7 @@ TextureImporter:
     nameFileIdTable:
       kobod_walk_carry_5: 1238659175
       kobod_walk_carry_2: 482114643
-      kobod_walk_carry_21: -1684756761
+      kobod_walk_carry_20: -1555344935
       kobod_walk_carry_9: -1109274098
       kobod_walk_carry_13: -1636449897
       kobod_walk_carry_4: 637285786
@@ -709,6 +772,7 @@ TextureImporter:
       kobod_walk_carry_0: -660350987
       kobod_walk_carry_10: -1698679921
       kobod_walk_carry_17: -377148315
+      kobod_walk_carry_29: -920251488
       kobod_walk_carry_18: 1783215722
       kobod_walk_carry_12: -1543496408
       kobod_walk_carry_8: -148774587
@@ -716,13 +780,15 @@ TextureImporter:
       kobod_walk_carry_26: 1007820017
       kobod_walk_carry_14: 1046573114
       kobod_walk_carry_22: 1590489580
+      kobod_walk_carry_27: 1551724991
       kobod_walk_carry_24: -510859575
+      kobod_walk_carry_28: 217363691
       kobod_walk_carry_7: 657599196
       kobod_walk_carry_1: 59218162
       kobod_walk_carry_23: -1712412952
       kobod_walk_carry_25: -354446069
       kobod_walk_carry_16: -359804833
-      kobod_walk_carry_20: -1555344935
+      kobod_walk_carry_21: -1684756761
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

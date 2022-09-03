@@ -32,7 +32,7 @@ public class PlayerStack : MonoBehaviour
 
         _items.Push(item);
 
-        pickUpSource.PlayOneShot(pickUpClip);
+        // pickUpSource.PlayOneShot(pickUpClip);
     }
 
     public bool DropAt(Vector3 position)

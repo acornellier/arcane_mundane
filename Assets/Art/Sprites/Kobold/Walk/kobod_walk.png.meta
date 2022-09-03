@@ -685,6 +685,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: kobod_walk_27
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 64
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.65625, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e953adf0ba4fe8549944e12419cb535d
+      internalID: -393072639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kobod_walk_28
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f6af3008b399b942aabef2f46448b5d
+      internalID: -1573682216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kobod_walk_29
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b947bc236f015549a2b40c7419ba5bf
+      internalID: 1728701272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -712,6 +775,7 @@ TextureImporter:
       kobod_walk_24: -752059321
       kobod_walk_13: 671111916
       kobod_walk_11: 1512795414
+      kobod_walk_28: -1573682216
       kobod_walk_4: -1132691902
       kobod_walk_5: -833746293
       kobod_walk_15: 1612824038
@@ -719,6 +783,8 @@ TextureImporter:
       kobod_walk_21: -1046480509
       kobod_walk_17: -1695308410
       kobod_walk_23: -131899809
+      kobod_walk_27: -393072639
+      kobod_walk_29: 1728701272
       kobod_walk_14: -802486590
       kobod_walk_16: -803492354
       kobod_walk_2: -1215257390

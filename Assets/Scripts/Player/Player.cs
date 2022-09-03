@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerAudio _audio;
     [SerializeField] PlayerInteractors _interactors;
     [SerializeField] PlayerStack _itemStack;
+    [SerializeField] SpriteRenderer _interactMarker;
     [SerializeField] Animations _animations;
 
     public bool canPickUpItem => _itemStack.count < _maxStackSize;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     {
         UpdateMovement();
         UpdateDirection();
+        UpdateGroundMarker();
         UpdateAnimations();
     }
 
@@ -137,6 +139,18 @@ public class Player : MonoBehaviour
         }
 
         _interactors.UpdateInteractor(_facingDirection);
+    }
+
+    void UpdateGroundMarker()
+    {
+        if (_interactors.currentInteractable == null)
+        {
+            _interactMarker.enabled = false;
+            return;
+        }
+
+        _interactMarker.enabled = true;
+        _interactMarker.transform.position = _interactors.currentInteractable.transform.position;
     }
 
     void UpdateAnimations()

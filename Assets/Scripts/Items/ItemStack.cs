@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class ItemStack : Interactable
 {
     [SerializeField] float _spacing = 0.25f;
@@ -15,11 +14,9 @@ public class ItemStack : Interactable
     Player _player;
     PlayerController _playerController;
     Collider2D _collider;
-    SpriteRenderer _renderer;
 
     static readonly Collider2D[] _results = new Collider2D[32];
 
-    bool _isHighlighted;
     readonly Stack<Item> _items = new();
 
     void Awake()
@@ -27,7 +24,6 @@ public class ItemStack : Interactable
         _player = FindObjectOfType<Player>();
         _playerController = FindObjectOfType<PlayerController>();
         _collider = GetComponent<Collider2D>();
-        _renderer = GetComponent<SpriteRenderer>();
     }
 
     void OnEnable()
@@ -59,13 +55,6 @@ public class ItemStack : Interactable
         item.MoveTo((Vector2)transform.position + _items.Count * _spacing * Vector2.up);
         item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
 
-        if (_isHighlighted)
-        {
-            item.Highlight();
-            if (_items.Any())
-                _items.Peek().Unhighlight();
-        }
-
         _collider.isTrigger = false;
 
         _items.Push(item);
@@ -76,30 +65,18 @@ public class ItemStack : Interactable
         if (_items.IsEmpty() || !_player.canPickUpItem) return;
 
         var item = _items.Pop();
-        item.Unhighlight();
         _player.PickUpItem(item);
 
         if (_items.IsEmpty())
             _collider.isTrigger = true;
-
-        if (_isHighlighted)
-            Highlight();
     }
 
     public override void Highlight()
     {
-        _isHighlighted = true;
-        _renderer.enabled = true;
-        if (_items.TryPeek(out var item))
-            item.Highlight();
     }
 
     public override void Unhighlight()
     {
-        _isHighlighted = false;
-        _renderer.enabled = false;
-        if (_items.TryPeek(out var item))
-            item.Unhighlight();
     }
 
     public static ItemStack FindAt(Vector3 position)

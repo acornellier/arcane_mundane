@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 2776217025
     locked: 0
+  - name: GroundMarker
+    uniqueID: 3308247765
+    locked: 0
   - name: Foreground
     uniqueID: 3482846767
     locked: 0

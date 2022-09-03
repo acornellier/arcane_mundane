@@ -45,7 +45,7 @@ public class Item : MonoBehaviour
         {
             transform.position = _destination;
             _moving = false;
-            putDownSource.PlayOneShot(putDownClip);
+            // putDownSource.PlayOneShot(putDownClip);
             return;
         }
 
@@ -63,17 +63,6 @@ public class Item : MonoBehaviour
     {
         item = itemObject;
         UpdateItemData();
-    }
-
-    public void Highlight()
-    {
-        _spriteRenderer.material.SetFloat(_outlineThickness, 1);
-    }
-
-    public void Unhighlight()
-    {
-        if (_spriteRenderer)
-            _spriteRenderer.material.SetFloat(_outlineThickness, 0);
     }
 
     public void MoveTo(Vector2 destination)

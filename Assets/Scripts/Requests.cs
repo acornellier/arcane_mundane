@@ -31,7 +31,7 @@ public class Requests : MonoBehaviour
     IEnumerator CO_NewRequest(ItemObject prevItem = null)
     {
         _wrapperImage.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(Random.Range(3, 7));
 
         var items = FindObjectsOfType<Item>();
 
