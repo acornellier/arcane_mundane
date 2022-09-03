@@ -54,4 +54,16 @@ public class PlayerStack : MonoBehaviour
     {
         return _items.Any();
     }
+
+    public Item Peek()
+    {
+        _items.TryPeek(out var item);
+        return item;
+    }
+
+    public void DestroyTop()
+    {
+        if (_items.TryPop(out var item))
+            Destroy(item.gameObject);
+    }
 }

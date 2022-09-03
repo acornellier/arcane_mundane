@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] Animations _animations;
 
     public bool canPickUpItem => _itemStack.count < _maxStackSize;
+    public Item topOfStack => _itemStack.Peek();
 
     PlayerInputActions.PlayerActions _actions;
     AnimancerComponent _animancer;
@@ -62,6 +63,11 @@ public class Player : MonoBehaviour
         if (!canPickUpItem) return;
 
         _itemStack.Push(item);
+    }
+
+    public void DestroyTop()
+    {
+        _itemStack.DestroyTop();
     }
 
     void OnInteract(InputAction.CallbackContext _)
