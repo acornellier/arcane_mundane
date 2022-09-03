@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     void OnDisable()
     {
         _actions.Disable();
+        _actions.Reveal.started -= OnRevealStarted;
+        _actions.Reveal.canceled -= OnRevealCancelled;
     }
 
     void OnRevealStarted(InputAction.CallbackContext _)

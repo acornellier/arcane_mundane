@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(Collider2D))]
 public class ItemStack : Interactable

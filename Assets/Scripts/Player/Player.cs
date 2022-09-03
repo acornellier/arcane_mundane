@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] float _speed = 7;
+    [SerializeField] float _runMultiplier = 1.5f;
     [SerializeField] float _stackSpeedPercentReduction = 0.1f;
     [SerializeField] int _maxStackSize = 3;
 
@@ -116,11 +117,15 @@ public class Player : MonoBehaviour
     void UpdateMovement()
     {
         var moveInput = _actions.Move.ReadValue<Vector2>();
-        var adjustedSpeed = _speed - _stackSpeedPercentReduction * _speed * _itemStack.count;
-        var newPosition =
-            (Vector2)transform.position + adjustedSpeed * Time.fixedDeltaTime * moveInput;
+        var runInput = _actions.Run.IsPressed();
 
-        _body.MovePosition(newPosition);
+        var adjustedSpeed = _speed - _stackSpeedPercentReduction * _speed * _itemStack.count;
+        if (runInput)
+            adjustedSpeed *= _runMultiplier;
+
+        var movement = adjustedSpeed * Time.fixedDeltaTime * moveInput;
+
+        _body.MovePosition((Vector2)transform.position + movement);
     }
 
     void UpdateDirection()

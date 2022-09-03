@@ -4,9 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(InventoryRenderer))]
 public class InventoryPanel : MonoBehaviour
 {
+    // [Inject] Player _player;
+
     void Start()
     {
-        var player = FindObjectOfType<Player>();
         // GetComponent<InventoryRenderer>().SetInventory(player.inventory);
     }
 }

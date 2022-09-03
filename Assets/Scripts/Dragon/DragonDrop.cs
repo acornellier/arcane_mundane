@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 public class DragonDrop : MonoBehaviour
@@ -11,9 +12,22 @@ public class DragonDrop : MonoBehaviour
     [SerializeField] int _dropCount = 10;
     [SerializeField] float _timeBetweenDrops = 0.4f;
 
-    public void Start()
+    [Inject] GameManager _gameManager;
+
+    void OnEnable()
     {
-        StartCoroutine(CO_DropOff());
+        _gameManager.OnGamePhaseChange += HandleGamePhaseChange;
+    }
+
+    void OnDisable()
+    {
+        _gameManager.OnGamePhaseChange -= HandleGamePhaseChange;
+    }
+
+    void HandleGamePhaseChange(GamePhase oldPhase, GamePhase newPhase)
+    {
+        if (newPhase == GamePhase.Delivery)
+            StartCoroutine(CO_DropOff());
     }
 
     IEnumerator CO_DropOff()
