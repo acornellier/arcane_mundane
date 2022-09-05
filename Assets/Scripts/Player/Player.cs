@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDataPersistence
 {
     [SerializeField] float _speed = 7;
     [SerializeField] float _runMultiplier = 1.5f;
@@ -29,8 +29,14 @@ public class Player : MonoBehaviour
 
     Vector2 _facingDirection = Vector2.up;
 
+    void OnApplicationQuit()
+    {
+        PersistentDataManager.instance.Save();
+    }
+
     void Awake()
     {
+        PersistentDataManager.instance.LoadObjects();
         _actions = new PlayerInputActions().Player;
         _animancer = GetComponent<AnimancerComponent>();
         _body = GetComponent<Rigidbody2D>();
@@ -46,6 +52,9 @@ public class Player : MonoBehaviour
 
     void OnDisable()
     {
+        _actions.Interact.performed -= OnInteract;
+        _actions.Drop.performed -= OnDrop;
+        _actions.HardDrop.performed -= OnHardDrop;
         _actions.Disable();
     }
 
@@ -60,6 +69,22 @@ public class Player : MonoBehaviour
         UpdateDirection();
         UpdateGroundMarker();
         UpdateAnimations();
+    }
+
+    public void Load(PersistentData data)
+    {
+        if (data.player.position == null) return;
+
+        transform.position = PersistentData.ArrayToVector3(data.player.position);
+        _facingDirection = PersistentData.ArrayToVector3(data.player.facingDirection);
+    }
+
+    public void Save()
+    {
+        var persistentDataManager = PersistentDataManager.instance;
+        var data = persistentDataManager.data;
+        data.player.position = PersistentData.Vector3ToArr(transform.position);
+        data.player.facingDirection = PersistentData.Vector3ToArr(_facingDirection);
     }
 
     public void Footstep()
@@ -184,5 +209,11 @@ public class Player : MonoBehaviour
         public DirectionalAnimationSet walk;
         public DirectionalAnimationSet carryIdle;
         public DirectionalAnimationSet carryWalk;
+    }
+
+    public class Data
+    {
+        public float[] position;
+        public float[] facingDirection;
     }
 }

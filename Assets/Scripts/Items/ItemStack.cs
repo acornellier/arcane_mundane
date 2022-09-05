@@ -5,11 +5,12 @@ using Zenject;
 [RequireComponent(typeof(Collider2D))]
 public class ItemStack : Interactable
 {
-    [SerializeField] float _spacing = 0.25f;
-    [SerializeField] int _maxSize = 3;
-    [SerializeField] float _underneathAlpha = 0.7f;
+    const float _spacing = 0.25f;
+    const float _underneathAlpha = 0.5f;
+    const int _maxSize = 3;
 
-    public bool isFull => _items.Count >= _maxSize;
+    public bool isFull => items.Count >= _maxSize;
+    public Stack<Item> items { get; } = new();
 
     Player _player;
     PlayerController _playerController;
@@ -38,11 +39,16 @@ public class ItemStack : Interactable
 
     void Start()
     {
-        _items.Clear();
+        items.Clear();
         var childrenItems = GetComponentsInChildren<Item>();
-        _maxSize = Mathf.Max(_maxSize, childrenItems.Length);
         foreach (var item in childrenItems)
         {
+            if (isFull)
+            {
+                Destroy(item);
+                continue;
+            }
+
             Push(item);
         }
     }
@@ -52,22 +58,22 @@ public class ItemStack : Interactable
         if (isFull) return;
 
         item.transform.SetParent(transform);
-        item.MoveTo((Vector2)transform.position + _items.Count * _spacing * Vector2.up);
-        item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
+        item.MoveTo((Vector2)transform.position + items.Count * _spacing * Vector2.up);
+        item.GetComponent<SpriteRenderer>().sortingOrder = items.Count;
 
         _collider.isTrigger = false;
 
-        _items.Push(item);
+        items.Push(item);
     }
 
     public override void Interact()
     {
-        if (_items.IsEmpty() || !_player.canPickUpItem) return;
+        if (items.IsEmpty() || !_player.canPickUpItem) return;
 
         var item = _items.Pop();
         _player.PickUpItem(item);
 
-        if (_items.IsEmpty())
+        if (items.IsEmpty())
             _collider.isTrigger = true;
     }
 
@@ -95,7 +101,7 @@ public class ItemStack : Interactable
     void SetUnderneathAlpha(bool reveal)
     {
         var first = true;
-        foreach (var item in _items)
+        foreach (var item in items)
         {
             var spriteRenderer = item.GetComponent<SpriteRenderer>();
             var color = spriteRenderer.color;
@@ -103,5 +109,11 @@ public class ItemStack : Interactable
             spriteRenderer.color = color;
             first = false;
         }
+    }
+
+    public class Data
+    {
+        public float[] position;
+        public string[] itemObjectNames;
     }
 }

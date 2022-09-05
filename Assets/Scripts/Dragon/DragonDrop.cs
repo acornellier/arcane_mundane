@@ -43,7 +43,7 @@ public class DragonDrop : MonoBehaviour
         var dropsDone = 0;
         while (dropsDone < _dropCount)
         {
-            var itemObject = _allItems.items[Random.Range(0, _allItems.items.Length)];
+            var itemObject = _allItems.items[Random.Range(0, _allItems.items.Count)];
             var item = Instantiate(_itemPrefab);
             item.Initialize(itemObject);
 

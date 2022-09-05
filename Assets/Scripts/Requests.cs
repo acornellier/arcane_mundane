@@ -52,7 +52,7 @@ public class Requests : MonoBehaviour
         if (!player) return;
 
         var topOfStack = player.topOfStack;
-        if (!topOfStack || topOfStack.item != _currentRequest)
+        if (!topOfStack || topOfStack.itemObject != _currentRequest)
             return;
 
         player.DestroyTop();
@@ -96,7 +96,7 @@ public class Requests : MonoBehaviour
 
         while (_currentRequest == null || _currentRequest == prevItem)
         {
-            _currentRequest = items[Random.Range(0, items.Length)].item;
+            _currentRequest = items[Random.Range(0, items.Length)].itemObject;
         }
 
         _timer = Random.Range(_waitTime.x, _waitTime.y);

@@ -3,14 +3,14 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
 {
-    [SerializeField] float speed = 10;
-    [SerializeField] float verticalSpeed = 2;
-    [SerializeField] float gravity = -10;
-
     [SerializeField] AudioSource putDownSource;
     [SerializeField] AudioClip putDownClip;
 
-    public ItemObject item;
+    public ItemObject itemObject;
+
+    const float _speed = 10;
+    const float _verticalSpeed = 3;
+    const float _gravity = -50;
 
     SpriteRenderer _spriteRenderer;
 
@@ -55,13 +55,13 @@ public class Item : MonoBehaviour
         if (yClose)
             _velocity.y = 0;
 
-        _velocity.y += gravity * Time.fixedDeltaTime;
+        _velocity.y += _gravity * Time.fixedDeltaTime;
         transform.position += Time.fixedDeltaTime * (Vector3)_velocity;
     }
 
     public void Initialize(ItemObject itemObject)
     {
-        item = itemObject;
+        this.itemObject = itemObject;
         UpdateItemData();
     }
 
@@ -69,8 +69,8 @@ public class Item : MonoBehaviour
     {
         _destination = destination;
         var horizontalDistance = _destination.x - transform.position.x;
-        _velocity.x = horizontalDistance / Time.fixedDeltaTime / speed;
-        _velocity.y = verticalSpeed;
+        _velocity.x = horizontalDistance / Time.fixedDeltaTime / _speed;
+        _velocity.y = _verticalSpeed;
         _moving = true;
     }
 
@@ -81,9 +81,9 @@ public class Item : MonoBehaviour
 
     void UpdateItemData()
     {
-        if (!item) return;
+        if (!itemObject) return;
 
-        name = item.Name;
-        GetComponent<SpriteRenderer>().sprite = item.sprite;
+        name = itemObject.Name;
+        GetComponent<SpriteRenderer>().sprite = itemObject.sprite;
     }
 }
