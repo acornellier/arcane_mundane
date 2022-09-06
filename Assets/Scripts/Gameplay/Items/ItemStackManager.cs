@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MoreLinq;
 using UnityEngine;
 using Zenject;
@@ -42,10 +43,9 @@ public class ItemStackManager : IDataPersistence
 
     public void Load(PersistentData data)
     {
-        var stacks = Object.FindObjectsOfType<ItemStack>();
-        foreach (var stack in stacks)
+        foreach (var stack in Object.FindObjectsOfType<ItemStack>())
         {
-            Object.Destroy(stack);
+            Utilities.DestroyGameObject(stack.gameObject);
         }
 
         foreach (var stackData in data.stacks)
@@ -69,26 +69,23 @@ public class ItemStackManager : IDataPersistence
 
                 var item = Object.Instantiate(_settings.itemPrefab);
                 item.Initialize(itemObject);
-                stack.Push(item);
+                stack.Push(item, false);
             }
         }
     }
 
-    public void Save(ref PersistentData data)
+    public void Save(PersistentData data)
     {
         var stacks = Object.FindObjectsOfType<ItemStack>();
         data.stacks = new ItemStack.Data[stacks.Length];
 
-        foreach (var (stackIdx, stack) in stacks.Index())
-        {
-            var stackData = data.stacks[stackIdx];
-            stackData.position = PersistentData.Vector3ToArr(stack.transform.position);
-            stackData.itemObjectNames = new string[stack.items.Count];
-            foreach (var (itemIdx, item) in stack.items.Index())
+        data.stacks = stacks.Select(
+            stack => new ItemStack.Data
             {
-                stackData.itemObjectNames[itemIdx] = item.itemObject.name;
+                position = PersistentData.Vector3ToArr(stack.transform.position),
+                itemObjectNames = stack.items.Select(item => item.itemObject.name).ToArray(),
             }
-        }
+        ).ToArray();
     }
 
     [Serializable]

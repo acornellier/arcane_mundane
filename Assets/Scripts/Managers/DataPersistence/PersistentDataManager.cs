@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
 
-public class PersistentDataManager : IInitializable, IDisposable
+public class PersistentDataManager : IInitializable
 {
-    const string _key = "SavedData";
+    [Inject] IEnumerable<IDataPersistence> _dataPersistences;
 
     PersistentData _data;
 
     public PersistentData data => _data ??= ParseData();
+
+    const string _key = "SavedData";
 
     public void Initialize()
     {
         LoadObjects();
     }
 
-    public void Dispose()
-    {
-        Save();
-    }
-
     public void Save()
     {
-        foreach (var dataPersistence in FindDataPersistences())
+        foreach (var dataPersistence in _dataPersistences)
         {
-            dataPersistence.Save(ref _data);
+            dataPersistence.Save(_data);
         }
 
         var jsonString = JsonConvert.SerializeObject(data);
@@ -36,9 +30,15 @@ public class PersistentDataManager : IInitializable, IDisposable
         PlayerPrefs.Save();
     }
 
+    public static void Reset()
+    {
+        PlayerPrefs.SetString(_key, "");
+        PlayerPrefs.Save();
+    }
+
     void LoadObjects()
     {
-        foreach (var dataPersistence in FindDataPersistences())
+        foreach (var dataPersistence in _dataPersistences)
         {
             dataPersistence.Load(data);
         }
@@ -60,10 +60,5 @@ public class PersistentDataManager : IInitializable, IDisposable
         return jsonString == ""
             ? new PersistentData()
             : JsonConvert.DeserializeObject<PersistentData>(jsonString);
-    }
-
-    static IEnumerable<IDataPersistence> FindDataPersistences()
-    {
-        return Object.FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
     }
 }

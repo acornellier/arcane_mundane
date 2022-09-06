@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
@@ -58,7 +59,7 @@ public class Item : MonoBehaviour
         UpdateItemData();
     }
 
-    public void MoveTo(Vector2 destination)
+    public void ThrowAt(Vector2 destination)
     {
         _destination = destination;
         var horizontalDistance = _destination.x - transform.position.x;

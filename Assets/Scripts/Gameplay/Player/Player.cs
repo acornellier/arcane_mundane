@@ -28,19 +28,18 @@ public class Player : MonoBehaviour, IDataPersistence
     void Awake()
     {
         _actions = new PlayerInputActions().Player;
+        _actions.Interact.performed += OnInteract;
         _animancer = GetComponent<AnimancerComponent>();
         _body = GetComponent<Rigidbody2D>();
     }
 
     void OnEnable()
     {
-        _actions.Interact.performed += OnInteract;
         _actions.Enable();
     }
 
     void OnDisable()
     {
-        _actions.Interact.performed -= OnInteract;
         _actions.Disable();
     }
 
@@ -61,10 +60,10 @@ public class Player : MonoBehaviour, IDataPersistence
         if (data.player.position == null) return;
 
         transform.position = PersistentData.ArrayToVector3(data.player.position);
-        _facingDirection = PersistentData.ArrayToVector2Int(data.player.facingDirection);
+        SetFacingDirection(PersistentData.ArrayToVector2Int(data.player.facingDirection));
     }
 
-    public void Save(ref PersistentData data)
+    public void Save(PersistentData data)
     {
         data.player.position = PersistentData.Vector3ToArr(transform.position);
         data.player.facingDirection = PersistentData.Vector2IntToArr(_facingDirection);
@@ -105,12 +104,19 @@ public class Player : MonoBehaviour, IDataPersistence
         if (moveInput == default || moveInput == _facingDirection)
             return;
 
-        _facingDirection = moveInput.y == 0
-            ? Vector2Int.RoundToInt(moveInput)
-            : new Vector2Int(0, Mathf.RoundToInt(moveInput.y));
+        SetFacingDirection(
+            moveInput.y == 0
+                ? Vector2Int.RoundToInt(moveInput)
+                : new Vector2Int(0, Mathf.RoundToInt(moveInput.y))
+        );
+    }
 
-        if ((moveInput.x < 0 && transform.localScale.x > 0) ||
-            (moveInput.x > 0 && transform.localScale.x < 0))
+    void SetFacingDirection(Vector2Int facingDirection)
+    {
+        _facingDirection = facingDirection;
+
+        if ((_facingDirection.x < 0 && transform.localScale.x > 0) ||
+            (_facingDirection.x > 0 && transform.localScale.x < 0))
         {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
             _itemStack.transform.localScale = transform.localScale;

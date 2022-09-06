@@ -27,28 +27,18 @@ public class ItemStack : MonoBehaviour
         _playerController.onReveal -= SetUnderneathAlpha;
     }
 
-    void Start()
-    {
-        foreach (var item in GetComponentsInChildren<Item>())
-        {
-            if (isFull)
-            {
-                Destroy(item);
-                continue;
-            }
-
-            if (!items.Contains(item))
-                Push(item);
-        }
-    }
-
-    public void Push(Item item)
+    public void Push(Item item, bool animate = true)
     {
         if (isFull) return;
 
         item.transform.parent = transform;
-        item.MoveTo((Vector2)transform.position + items.Count * _spacing * Vector2.up);
         item.GetComponent<SpriteRenderer>().sortingOrder = items.Count;
+
+        var destination = (Vector2)transform.position + items.Count * _spacing * Vector2.up;
+        if (animate)
+            item.ThrowAt(destination);
+        else
+            item.transform.position = destination;
 
         items.Push(item);
     }
@@ -59,7 +49,7 @@ public class ItemStack : MonoBehaviour
         item.transform.parent = null;
 
         if (items.IsEmpty())
-            Destroy(gameObject);
+            Utilities.DestroyGameObject(gameObject);
 
         return item;
     }

@@ -4,7 +4,7 @@ using Zenject;
 
 public class VolumeControl : MonoBehaviour
 {
-    [SerializeField] AudioManager.AudioChannel channel = AudioManager.AudioChannel.Master;
+    [SerializeField] AudioManager.AudioChannel _channel = AudioManager.AudioChannel.Master;
 
     [Inject] AudioManager _audioManager;
 
@@ -20,11 +20,11 @@ public class VolumeControl : MonoBehaviour
     {
         _slider.minValue = 0;
         _slider.maxValue = 1;
-        _slider.value = AudioManager.GetChannelValue(channel);
+        _slider.value = AudioManager.GetChannelValue(_channel);
     }
 
     void HandleSliderValueChanged(float value)
     {
-        _audioManager.SetVolume(channel, value);
+        _audioManager.SetVolume(_channel, value);
     }
 }

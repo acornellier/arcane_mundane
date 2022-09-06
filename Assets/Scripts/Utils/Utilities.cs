@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public static class GameUtilities
+public static class Utilities
 {
     public static void Quit()
     {
@@ -9,5 +9,10 @@ public static class GameUtilities
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    public static void DestroyGameObject(GameObject go)
+    {
+        Object.Destroy(go);
     }
 }

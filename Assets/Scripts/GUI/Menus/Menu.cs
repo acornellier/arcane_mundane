@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Zenject;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] GameObject defaultSelected;
+    [SerializeField] Selectable _defaultSelected;
 
     [Inject] protected MenuManager menuManager;
 
     void OnEnable()
     {
-        if (defaultSelected)
-            EventSystem.current.SetSelectedGameObject(defaultSelected);
+        if (_defaultSelected)
+            _defaultSelected.Select();
     }
 
     public void GoBackOrResume()

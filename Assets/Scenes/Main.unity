@@ -5533,7 +5533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd43cd87b2794c96987feca890c25278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDelayTime: 2
+  startDelayTime: 0
   endDelayTime: 0
   nodeEvents:
   - {fileID: 1730003845}

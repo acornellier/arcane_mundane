@@ -33,15 +33,17 @@ public class DragonDrop : MonoBehaviour
     IEnumerator CO_DropOff()
     {
         var dropsDone = 0;
-        while (dropsDone < _dropCount)
+        var itemIdx = 0;
+        while (dropsDone < _dropCount && itemIdx < _allItems.items.Count)
         {
-            var itemObject = _allItems.items[Random.Range(0, _allItems.items.Count)];
+            var itemObject = _allItems.items[itemIdx];
             var item = Instantiate(_itemPrefab);
             item.Initialize(itemObject);
 
             DropItem(item);
 
             dropsDone += 1;
+            itemIdx += 1;
             yield return new WaitForSeconds(_timeBetweenDrops);
         }
     }

@@ -4,7 +4,7 @@ using Zenject;
 
 public class PauseMenu : Menu
 {
-    [SerializeField] GameObject pauseMenuUi;
+    [SerializeField] GameObject _pauseMenuUi;
 
     [Inject] GameManager _gameManager;
 
@@ -14,7 +14,7 @@ public class PauseMenu : Menu
     {
         _playerControls = new PlayerInputActions();
 
-        pauseMenuUi.SetActive(false);
+        _pauseMenuUi.SetActive(false);
     }
 
     void OnEnable()
@@ -44,7 +44,7 @@ public class PauseMenu : Menu
     void PauseCallback()
     {
         menuManager.CloseAll();
-        menuManager.OpenMenu(pauseMenuUi);
+        menuManager.OpenMenu(_pauseMenuUi);
     }
 
     void ResumeCallback()
@@ -54,6 +54,6 @@ public class PauseMenu : Menu
 
     public void Quit()
     {
-        GameUtilities.Quit();
+        Utilities.Quit();
     }
 }

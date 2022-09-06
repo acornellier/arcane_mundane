@@ -77,6 +77,6 @@ public class PlayerStack : MonoBehaviour
         if (_items.TryPop(out var item))
             // item.transform.SetParent(null);
             // item.MoveToLocal(Vector2.zero + _items.Count * _spacing * Vector2.up);
-            Destroy(item.gameObject);
+            Utilities.DestroyGameObject(item.gameObject);
     }
 }
