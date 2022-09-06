@@ -11,7 +11,7 @@ public class ItemStackManager : IDataPersistence
 
     static readonly Collider2D[] _results = new Collider2D[32];
 
-    public static ItemStack FindAt(Vector3 position)
+    public static ItemStack FindAt(Vector2 position)
     {
         var roundedPosition = Vector2Int.RoundToInt(position);
         var size = Physics2D.OverlapPointNonAlloc(roundedPosition, _results);
@@ -25,12 +25,12 @@ public class ItemStackManager : IDataPersistence
         return null;
     }
 
-    public ItemStack FindOrCreateAt(Vector3 position)
+    public ItemStack FindOrCreateAt(Vector2 position)
     {
         return FindAt(position) ?? CreateAt(position);
     }
 
-    ItemStack CreateAt(Vector3 position)
+    ItemStack CreateAt(Vector2 position)
     {
         var roundedPosition = Vector2Int.RoundToInt(position);
 

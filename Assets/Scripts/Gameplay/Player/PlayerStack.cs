@@ -40,7 +40,7 @@ public class PlayerStack : MonoBehaviour
         _items.Push(item);
     }
 
-    public void PickUpAt(Vector3 position)
+    public void PickUpAt(Vector2 position)
     {
         if (isFull) return;
 
@@ -50,7 +50,7 @@ public class PlayerStack : MonoBehaviour
         Push(stack.Pop());
     }
 
-    public void DropAt(Vector3 position)
+    public void DropAt(Vector2 position)
     {
         if (_items.IsEmpty()) return;
 

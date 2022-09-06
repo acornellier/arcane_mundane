@@ -48,10 +48,10 @@ public class PlayerMouse : MonoBehaviour
         _stackMarker.transform.position = RoundedMousePosition();
     }
 
-    Vector3 RoundedMousePosition()
+    Vector2 RoundedMousePosition()
     {
         return Vector2Int.RoundToInt(
             _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue())
-        ).ToVector3();
+        );
     }
 }

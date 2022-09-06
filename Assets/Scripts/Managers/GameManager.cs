@@ -38,10 +38,7 @@ public class GameManager : IInitializable
     {
         isPaused = paused;
 
-        if (isPaused)
-            Time.timeScale = 0;
-        else if (isPaused)
-            Time.timeScale = 1;
+        Time.timeScale = isPaused ? 0 : 1;
 
         OnGamePausedChange?.Invoke(isPaused);
     }

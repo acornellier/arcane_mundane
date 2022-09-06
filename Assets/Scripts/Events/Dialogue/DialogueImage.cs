@@ -48,7 +48,7 @@ public class DialogueImage : MonoBehaviour
         _currentDialogue = dialogue;
         talkingHead.sprite = _currentDialogue.character.mouthClosedSprite;
         title.text = _currentDialogue.character.characterName;
-        InitializeContents(_currentDialogue);
+        contents.text = _currentDialogue.line;
 
         if (_currentDialogue.wobble != Wobble.None)
         {
@@ -106,19 +106,6 @@ public class DialogueImage : MonoBehaviour
 
         mesh.vertices = vertices;
         contents.canvasRenderer.SetMesh(mesh);
-    }
-
-    void InitializeContents(Dialogue dialogue)
-    {
-        contents.fontSize = dialogue.fontSize switch
-        {
-            DialogueFontSize.Normal => 20,
-            DialogueFontSize.Large => 40,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
-
-        contents.fontStyle = dialogue.fontStyle;
-        contents.text = _currentDialogue.line;
     }
 
     static List<string> SplitIntoSentences(string line)

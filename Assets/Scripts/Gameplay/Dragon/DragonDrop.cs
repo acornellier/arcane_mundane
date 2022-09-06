@@ -50,19 +50,23 @@ public class DragonDrop : MonoBehaviour
 
     void DropItem(Item item)
     {
-        for (var i = 0; i < 10; ++i)
+        for (var ring = 0; ring < 5; ++ring)
         {
-            var position = transform.position +
-                           Random.Range(-2, 2) * Vector3.right +
-                           Random.Range(-1, 1) * Vector3.up;
+            for (var x = -ring; x <= ring; ++x)
+            {
+                for (var y = -ring; y <= ring; ++y)
+                {
+                    var position = (Vector2)transform.position + new Vector2(x, y);
 
-            var stack = _itemStackManager.FindOrCreateAt(position);
-            if (stack.isFull)
-                continue;
-
-            item.transform.position = stack.transform.position + new Vector3(0, 2);
-            stack.Push(item);
-            return;
+                    var stack = _itemStackManager.FindOrCreateAt(position);
+                    if (!stack.isFull)
+                    {
+                        item.transform.position = stack.transform.position + new Vector3(0, 2);
+                        stack.Push(item);
+                        return;
+                    }
+                }
+            }
         }
 
         throw new Exception("Could not find anywhere to drop spawned item");
