@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c265f0d6ec4c18bd45dcc13cfc145a, type: 3}
+  m_Name: Kobold
+  m_EditorClassIdentifier: 
+  characterName: Kobold
+  mouthClosedSprite: {fileID: -920529023, guid: 4e605417a1b0e4f0aba0879b66587c58, type: 3}
+  mouthOpenSprite: {fileID: 9846913, guid: 4e605417a1b0e4f0aba0879b66587c58, type: 3}

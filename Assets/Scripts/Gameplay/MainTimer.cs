@@ -24,15 +24,10 @@ public class MainTimer : MonoBehaviour
         _gameManager.OnGamePhaseChange -= HandleGamePhaseChange;
     }
 
-    void Start()
-    {
-        _gameManager.SetPhase(GamePhase.Delivery);
-    }
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G) && _gameManager.phase == GamePhase.Delivery)
-            _gameManager.SetPhase(GamePhase.Service);
+        // if (Input.GetKeyDown(KeyCode.G) && _gameManager.phase == GamePhase.Delivery)
+        // _gameManager.SetPhase(GamePhase.Service);
     }
 
     void HandleGamePhaseChange(GamePhase oldPhase, GamePhase newPhase)
