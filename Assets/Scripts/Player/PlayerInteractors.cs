@@ -8,6 +8,7 @@ public class PlayerInteractors : MonoBehaviour
 
     PlayerInteractor _currentInteractor;
 
+    public Vector3 currentInteractorPosition => _currentInteractor.transform.position;
     public Interactable currentInteractable => _currentInteractor.current;
 
     void Awake()

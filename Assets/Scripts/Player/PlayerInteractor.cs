@@ -12,18 +12,6 @@ public class PlayerInteractor : MonoBehaviour
     Vector3 _lastPosition;
     bool _changed;
 
-    void OnEnable()
-    {
-        if (current)
-            current.Highlight();
-    }
-
-    void OnDisable()
-    {
-        if (current)
-            current.Unhighlight();
-    }
-
     void Update()
     {
         if (!_changed && transform.position == _lastPosition)
@@ -34,12 +22,6 @@ public class PlayerInteractor : MonoBehaviour
 
         var nearest = NearestInteractable();
         if (nearest == current) return;
-
-        if (current)
-            current.Unhighlight();
-
-        if (nearest)
-            nearest.Highlight();
 
         current = nearest;
     }

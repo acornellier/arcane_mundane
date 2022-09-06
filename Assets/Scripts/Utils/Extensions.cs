@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -59,5 +57,10 @@ public static class Extensions
     public static bool IsEmpty<T>(this IEnumerable<T> source)
     {
         return !source.Any();
+    }
+
+    public static Vector3 ToVector3(this Vector2Int v)
+    {
+        return new Vector3(v.x, v.y);
     }
 }

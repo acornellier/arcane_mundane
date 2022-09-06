@@ -7,24 +7,26 @@ public class PlayerController : MonoBehaviour
     PlayerInputActions.PlayerActions _actions;
 
     public Action<bool> onReveal;
+    public Action onLeftClick;
+    public Action onRightClick;
 
     void Awake()
     {
         _actions = new PlayerInputActions().Player;
+        _actions.LeftClick.performed += HandleLeftClick;
+        _actions.RightClick.performed += HandleRightClick;
+        _actions.Reveal.started += OnRevealStarted;
+        _actions.Reveal.canceled += OnRevealCancelled;
     }
 
     void OnEnable()
     {
         _actions.Enable();
-        _actions.Reveal.started += OnRevealStarted;
-        _actions.Reveal.canceled += OnRevealCancelled;
     }
 
     void OnDisable()
     {
         _actions.Disable();
-        _actions.Reveal.started -= OnRevealStarted;
-        _actions.Reveal.canceled -= OnRevealCancelled;
     }
 
     void OnRevealStarted(InputAction.CallbackContext _)
@@ -35,5 +37,15 @@ public class PlayerController : MonoBehaviour
     void OnRevealCancelled(InputAction.CallbackContext _)
     {
         onReveal?.Invoke(false);
+    }
+
+    void HandleLeftClick(InputAction.CallbackContext obj)
+    {
+        onLeftClick?.Invoke();
+    }
+
+    void HandleRightClick(InputAction.CallbackContext obj)
+    {
+        onRightClick?.Invoke();
     }
 }

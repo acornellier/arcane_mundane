@@ -1,30 +1,20 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
-[RequireComponent(typeof(Collider2D))]
-public class ItemStack : Interactable
+public class ItemStack : MonoBehaviour
 {
+    public bool isFull => items.Count >= _maxSize;
+    public Stack<Item> items { get; } = new();
+
     const float _spacing = 0.25f;
     const float _underneathAlpha = 0.5f;
     const int _maxSize = 3;
 
-    public bool isFull => items.Count >= _maxSize;
-    public Stack<Item> items { get; } = new();
-
-    Player _player;
     PlayerController _playerController;
-    Collider2D _collider;
-
-    static readonly Collider2D[] _results = new Collider2D[32];
-
-    readonly Stack<Item> _items = new();
 
     void Awake()
     {
-        _player = FindObjectOfType<Player>();
         _playerController = FindObjectOfType<PlayerController>();
-        _collider = GetComponent<Collider2D>();
     }
 
     void OnEnable()
@@ -39,9 +29,7 @@ public class ItemStack : Interactable
 
     void Start()
     {
-        items.Clear();
-        var childrenItems = GetComponentsInChildren<Item>();
-        foreach (var item in childrenItems)
+        foreach (var item in GetComponentsInChildren<Item>())
         {
             if (isFull)
             {
@@ -49,7 +37,8 @@ public class ItemStack : Interactable
                 continue;
             }
 
-            Push(item);
+            if (!items.Contains(item))
+                Push(item);
         }
     }
 
@@ -57,45 +46,22 @@ public class ItemStack : Interactable
     {
         if (isFull) return;
 
-        item.transform.SetParent(transform);
+        item.transform.parent = transform;
         item.MoveTo((Vector2)transform.position + items.Count * _spacing * Vector2.up);
         item.GetComponent<SpriteRenderer>().sortingOrder = items.Count;
-
-        _collider.isTrigger = false;
 
         items.Push(item);
     }
 
-    public override void Interact()
+    public Item Pop()
     {
-        if (items.IsEmpty() || !_player.canPickUpItem) return;
-
-        var item = _items.Pop();
-        _player.PickUpItem(item);
+        var item = items.Pop();
+        item.transform.parent = null;
 
         if (items.IsEmpty())
-            _collider.isTrigger = true;
-    }
+            Destroy(gameObject);
 
-    public override void Highlight()
-    {
-    }
-
-    public override void Unhighlight()
-    {
-    }
-
-    public static ItemStack FindAt(Vector3 position)
-    {
-        var size = Physics2D.OverlapPointNonAlloc(position, _results);
-
-        for (var i = 0; i < size; ++i)
-        {
-            if (_results[i].TryGetComponent<ItemStack>(out var itemStack))
-                return itemStack;
-        }
-
-        return null;
+        return item;
     }
 
     void SetUnderneathAlpha(bool reveal)

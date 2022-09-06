@@ -1,44 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using Zenject;
 using Object = UnityEngine.Object;
 
-public class PersistentDataManager
+public class PersistentDataManager : IInitializable, IDisposable
 {
-    static PersistentDataManager _instance;
-    public static PersistentDataManager instance => _instance ??= new PersistentDataManager();
-
-    PersistentData _persistentData;
-
     const string _key = "SavedData";
 
-    public PersistentData data
-    {
-        get
-        {
-            if (_persistentData == null)
-                LoadData();
+    PersistentData _data;
 
-            return _persistentData;
-        }
-        private set => _persistentData = value;
+    public PersistentData data => _data ??= ParseData();
+
+    public void Initialize()
+    {
+        LoadObjects();
     }
 
-    public void LoadObjects()
+    public void Dispose()
     {
-        foreach (var dataPersistence in FindDataPersistences())
-        {
-            dataPersistence.Load(data);
-        }
+        Save();
     }
 
     public void Save()
     {
         foreach (var dataPersistence in FindDataPersistences())
         {
-            dataPersistence.Save();
+            dataPersistence.Save(ref _data);
         }
 
         var jsonString = JsonConvert.SerializeObject(data);
@@ -46,10 +36,12 @@ public class PersistentDataManager
         PlayerPrefs.Save();
     }
 
-    public void ResetData()
+    void LoadObjects()
     {
-        PlayerPrefs.DeleteKey(_key);
-        LoadData();
+        foreach (var dataPersistence in FindDataPersistences())
+        {
+            dataPersistence.Load(data);
+        }
     }
 
     public bool IsBoolSet(string key)
@@ -62,17 +54,12 @@ public class PersistentDataManager
         data.bools[key] = value;
     }
 
-    void LoadData()
+    static PersistentData ParseData()
     {
         var jsonString = PlayerPrefs.GetString(_key);
-        if (jsonString != "")
-        {
-            data = JsonConvert.DeserializeObject<PersistentData>(jsonString);
-            return;
-        }
-
-        data = new PersistentData();
-        Save();
+        return jsonString == ""
+            ? new PersistentData()
+            : JsonConvert.DeserializeObject<PersistentData>(jsonString);
     }
 
     static IEnumerable<IDataPersistence> FindDataPersistences()

@@ -1,18 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class PlayerStack : MonoBehaviour
 {
-    [SerializeField] float spacing = 0.25f;
-
     [SerializeField] AudioSource pickUpSource;
     [SerializeField] AudioClip pickUpClip;
 
+    [Inject] ItemStackManager _itemStackManager;
+
+    const int _maxSize = 3;
+    const float _spacing = 0.25f;
+
     public int count => _items.Count;
 
-    bool _isHighlighted;
     readonly Stack<Item> _items = new();
+    bool isFull => _items.Count >= _maxSize;
+    bool _isHighlighted;
 
     void Start()
     {
@@ -23,37 +28,37 @@ public class PlayerStack : MonoBehaviour
         }
     }
 
-    public void Push(Item item)
+    void Push(Item item)
     {
+        if (isFull) return;
+
         item.StopMoving();
         item.transform.SetParent(transform, false);
-        item.transform.localPosition = Vector3.zero + _items.Count * spacing * Vector3.up;
+        item.transform.localPosition = Vector3.zero + _items.Count * _spacing * Vector3.up;
         item.GetComponent<SpriteRenderer>().sortingOrder = _items.Count;
 
         _items.Push(item);
-
-        // pickUpSource.PlayOneShot(pickUpClip);
     }
 
-    public bool DropAt(Vector3 position)
+    public void PickUpAt(Vector3 position)
     {
-        if (_items.IsEmpty()) return false;
+        if (isFull) return;
 
-        var stack = ItemStack.FindAt(position);
+        var stack = ItemStackManager.FindAt(position);
+        if (!stack) return;
+
+        Push(stack.Pop());
+    }
+
+    public void DropAt(Vector3 position)
+    {
+        if (_items.IsEmpty()) return;
+
+        var stack = _itemStackManager.FindOrCreateAt(position);
         if (stack.isFull)
-            return false;
+            return;
 
         stack.Push(_items.Pop());
-        return true;
-    }
-
-    public bool MoveTo(ItemStack otherStack)
-    {
-        if (_items.IsEmpty() || otherStack.isFull) return false;
-
-        var item = _items.Pop();
-        otherStack.Push(item);
-        return true;
     }
 
     public bool Any()

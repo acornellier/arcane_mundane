@@ -12,18 +12,12 @@ public class Item : MonoBehaviour
     const float _verticalSpeed = 3;
     const float _gravity = -50;
 
-    SpriteRenderer _spriteRenderer;
-
     bool _moving;
     Vector2 _destination;
     Vector2 _velocity;
 
-    static readonly int _outlineThickness = Shader.PropertyToID("_OutlineThickness");
-
     void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteRenderer.material = new Material(_spriteRenderer.material);
         UpdateItemData();
     }
 
@@ -34,10 +28,9 @@ public class Item : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 position = transform.position;
-        if (!_moving || position == _destination) return;
+        if (!_moving) return;
 
-        var diff = _destination - position;
+        var diff = _destination - (Vector2)transform.position;
         var xClose = Mathf.Abs(diff.x) < 0.1f;
         var yClose = diff.y > -0.1f;
 
@@ -59,9 +52,9 @@ public class Item : MonoBehaviour
         transform.position += Time.fixedDeltaTime * (Vector3)_velocity;
     }
 
-    public void Initialize(ItemObject itemObject)
+    public void Initialize(ItemObject newItemObject)
     {
-        this.itemObject = itemObject;
+        itemObject = newItemObject;
         UpdateItemData();
     }
 

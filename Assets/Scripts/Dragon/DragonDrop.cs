@@ -8,11 +8,11 @@ public class DragonDrop : MonoBehaviour
 {
     [SerializeField] ItemObjectList _allItems;
     [SerializeField] Item _itemPrefab;
-    [SerializeField] ItemStack _stackPrefab;
     [SerializeField] int _dropCount = 10;
     [SerializeField] float _timeBetweenDrops = 0.4f;
 
     [Inject] GameManager _gameManager;
+    [Inject] ItemStackManager _itemStackManager;
 
     void OnEnable()
     {
@@ -32,14 +32,6 @@ public class DragonDrop : MonoBehaviour
 
     IEnumerator CO_DropOff()
     {
-        for (var x = -10; x <= 10; ++x)
-        {
-            for (var y = -10; y <= 10; ++y)
-            {
-                Instantiate(_stackPrefab, new Vector3(x, y), Quaternion.identity);
-            }
-        }
-
         var dropsDone = 0;
         while (dropsDone < _dropCount)
         {
@@ -62,7 +54,7 @@ public class DragonDrop : MonoBehaviour
                            Random.Range(-2, 2) * Vector3.right +
                            Random.Range(-1, 1) * Vector3.up;
 
-            var stack = ItemStack.FindAt(position);
+            var stack = _itemStackManager.FindOrCreateAt(position);
             if (stack.isFull)
                 continue;
 
