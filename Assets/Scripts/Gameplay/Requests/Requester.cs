@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -38,13 +37,25 @@ public class Requester : MonoBehaviour
 
     public ItemObject MakeRequest()
     {
+        var item = FindUnrequestedItem();
+        _currentRequests.Add(item);
+        return item;
+    }
+
+    ItemObject FindUnrequestedItem()
+    {
         var items = FindObjectsOfType<Item>();
         if (items.Length == 0)
             throw new Exception("No items available");
 
-        var item = items[Random.Range(0, items.Length)].itemObject;
-        _currentRequests.Add(item);
-        return item;
+        for (var i = 0; i < 100; ++i)
+        {
+            var itemObject = items[Random.Range(0, items.Length)].itemObject;
+            if (!_currentRequests.Contains(itemObject))
+                return itemObject;
+        }
+
+        throw new Exception("Could not find anywhere to drop spawned item");
     }
 
     void CheckPlayerStack()

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour, IDataPersistence
+public class Player : MonoBehaviour, IPersistableData
 {
     [SerializeField] float _speed = 7;
     [SerializeField] float _runMultiplier = 1.5f;

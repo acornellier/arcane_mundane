@@ -3,7 +3,7 @@ using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
 
-public class ItemStackManager : IDataPersistence
+public class ItemStackManager : IPersistableData
 {
     [Inject(Id = InjectId.allItems)] ItemObjectList _allItems;
     [Inject(Id = InjectId.prefab)] Item _itemPrefab;

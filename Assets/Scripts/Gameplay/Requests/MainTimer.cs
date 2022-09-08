@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -89,6 +88,11 @@ public class MainTimer : MonoBehaviour
             await UniTask.Delay(1000, cancellationToken: token);
         }
 
+        LoseGame();
+    }
+
+    public void LoseGame()
+    {
         _loseScreen.SetActive(true);
     }
 }

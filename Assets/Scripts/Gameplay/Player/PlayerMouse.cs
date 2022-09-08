@@ -38,6 +38,8 @@ public class PlayerMouse : MonoBehaviour
 
     void HandleLeftClick()
     {
+        if (IsMouseOffScreen()) return;
+
         var mousePosition = RoundedMousePosition();
 
         var size = Physics2D.OverlapPointNonAlloc(mousePosition, _results);
@@ -63,11 +65,20 @@ public class PlayerMouse : MonoBehaviour
 
     void HandleRightClick()
     {
+        if (IsMouseOffScreen()) return;
+
         var mousePosition = RoundedMousePosition();
+
         if (Vector2.Distance(transform.position, mousePosition) > _dropRange)
             return;
 
         _playerStack.DropAt(mousePosition);
+    }
+
+    bool IsMouseOffScreen()
+    {
+        var position = _mainCamera.ScreenToViewportPoint(Mouse.current.position.ReadValue());
+        return position.x is < 0 or > 1 || position.y is < 0 or > 1;
     }
 
     Vector2 RoundedMousePosition()

@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-public class QuestPersistence : IDataPersistence
+public class QuestPersistence : IPersistableData
 {
     [Inject(Id = InjectId.startQuest)] QuestNode _startQuest;
 
@@ -18,16 +18,8 @@ public class QuestPersistence : IDataPersistence
 
         foreach (var questNode in Object.FindObjectsOfType<QuestNode>(true))
         {
-            // if (data.completedQuestIds.Contains(questNode.id))
-            // {
-            // questNode.gameObject.SetActive(false);
-            // }
-            // else
-            if (questNode.id == data.nextQuestId)
-            {
-                questNode.gameObject.SetActive(true);
-                questNode.RunAndForget();
-            }
+            var isNextQuest = questNode.id == data.nextQuestId;
+            questNode.gameObject.SetActive(isNextQuest);
         }
     }
 

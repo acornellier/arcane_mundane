@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using Zenject;
 
 public class PersistentDataManager : IInitializable
 {
-    [Inject] IEnumerable<IDataPersistence> _dataPersistences;
+    [Inject] IEnumerable<IPersistableData> _persistableDatas;
 
     PersistentData _data;
 
@@ -20,7 +21,7 @@ public class PersistentDataManager : IInitializable
 
     public void Save()
     {
-        foreach (var dataPersistence in _dataPersistences)
+        foreach (var dataPersistence in AllPersistableDatas())
         {
             dataPersistence.Save(_data);
         }
@@ -38,7 +39,7 @@ public class PersistentDataManager : IInitializable
 
     void LoadObjects()
     {
-        foreach (var dataPersistence in _dataPersistences)
+        foreach (var dataPersistence in AllPersistableDatas())
         {
             dataPersistence.Load(data);
         }
@@ -52,6 +53,16 @@ public class PersistentDataManager : IInitializable
     public void SetBool(string key, bool value = true)
     {
         data.bools[key] = value;
+    }
+
+    IEnumerable<IPersistableData> AllPersistableDatas()
+    {
+        var objects = Object
+            .FindObjectsOfType<MonoBehaviour>(true)
+            .OfType<IPersistableData>()
+            .Where(persistableData => !_persistableDatas.Contains(persistableData));
+
+        return _persistableDatas.Concat(objects);
     }
 
     static PersistentData ParseData()
