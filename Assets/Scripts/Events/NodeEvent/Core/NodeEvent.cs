@@ -1,32 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public abstract class NodeEvent : MonoBehaviour
 {
-    [SerializeField] float startDelayTime;
-    [SerializeField] float endDelayTime;
+    [SerializeField] float _startDelayTime;
+    [SerializeField] float _endDelayTime;
 
-    public bool isDone { get; protected set; }
-
-    public void Run()
+    public async UniTask Run(CancellationToken token)
     {
-        StartCoroutine(CO_RunWrapper());
+        if (_startDelayTime != 0)
+            await UniTask.Delay(TimeSpan.FromSeconds(_startDelayTime), cancellationToken: token);
+
+        await RunInternal(token);
+
+        if (_endDelayTime != 0)
+            await UniTask.Delay(TimeSpan.FromSeconds(_endDelayTime), cancellationToken: token);
     }
 
-    IEnumerator CO_RunWrapper()
+    public void RunAndForget()
     {
-        isDone = false;
-
-        if (startDelayTime != 0)
-            yield return new WaitForSeconds(startDelayTime);
-
-        yield return StartCoroutine(CO_Run());
-
-        if (endDelayTime != 0)
-            yield return new WaitForSeconds(endDelayTime);
-
-        isDone = true;
+        Run(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
-    protected abstract IEnumerator CO_Run();
+    protected abstract UniTask RunInternal(CancellationToken token);
 }

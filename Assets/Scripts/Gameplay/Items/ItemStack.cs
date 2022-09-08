@@ -69,7 +69,7 @@ public class ItemStack : MonoBehaviour
 
     public class Data
     {
-        public float[] position;
+        public Vector3 position;
         public string[] itemObjectNames;
     }
 }

@@ -1,50 +1,36 @@
 ﻿using System;
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using MoreLinq;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
-public class DragonDrop : MonoBehaviour
+public class Delivery : MonoBehaviour
 {
-    [SerializeField] ItemObjectList _allItems;
-    [SerializeField] Item _itemPrefab;
-    [SerializeField] int _dropCount = 10;
     [SerializeField] float _timeBetweenDrops = 0.4f;
 
-    [Inject] GameManager _gameManager;
     [Inject] ItemStackManager _itemStackManager;
+    [Inject(Id = InjectId.allItems)] ItemObjectList _allItems;
+    [Inject(Id = InjectId.prefab)] Item _itemPrefab;
 
-    void OnEnable()
+    public async UniTask Deliver(CancellationToken token, int numberOfItems)
     {
-        _gameManager.OnGamePhaseChange += HandleGamePhaseChange;
-    }
+        var itemsDelivered = 0;
 
-    void OnDisable()
-    {
-        _gameManager.OnGamePhaseChange -= HandleGamePhaseChange;
-    }
+        var shuffledItems = _allItems.items.Shuffle();
 
-    void HandleGamePhaseChange(GamePhase oldPhase, GamePhase newPhase)
-    {
-        if (newPhase == GamePhase.Delivery)
-            StartCoroutine(CO_DropOff());
-    }
-
-    IEnumerator CO_DropOff()
-    {
-        var dropsDone = 0;
-        var itemIdx = 0;
-        while (dropsDone < _dropCount && itemIdx < _allItems.items.Count)
+        foreach (var itemObject in shuffledItems.Repeat())
         {
-            var itemObject = _allItems.items[itemIdx];
+            if (itemsDelivered > numberOfItems)
+                break;
+
             var item = Instantiate(_itemPrefab);
             item.Initialize(itemObject);
 
             DropItem(item);
 
-            dropsDone += 1;
-            itemIdx += 1;
-            yield return new WaitForSeconds(_timeBetweenDrops);
+            itemsDelivered += 1;
+            await UniTask.Delay(TimeSpan.FromSeconds(_timeBetweenDrops), cancellationToken: token);
         }
     }
 

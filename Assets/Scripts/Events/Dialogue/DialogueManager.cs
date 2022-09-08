@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] DialogueImage topImage;
-    [SerializeField] DialogueImage bottomImage;
 
+    public bool isActive;
     public Action onDialogueStart;
     public Action onDialogueEnd;
 
@@ -21,13 +21,13 @@ public class DialogueManager : MonoBehaviour
     {
         _actions = new PlayerInputActions().Player;
         _actions.LeftClick.performed += OnNextInput;
+        _actions.RightClick.performed += OnSkipinput;
         _actions.Interact.performed += OnNextInput;
     }
 
     void Start()
     {
         topImage.gameObject.SetActive(false);
-        bottomImage.gameObject.SetActive(false);
     }
 
     void OnDisable()
@@ -35,13 +35,16 @@ public class DialogueManager : MonoBehaviour
         StopDialogue();
     }
 
-    public void StartDialogue(IEnumerable<Dialogue> dialogues, Action callback = null)
+    public void StartDialogue(IEnumerable<Dialogue> dialogues)
     {
+        if (isActive)
+            throw new Exception("Dialogue Manager is already active");
+
+        isActive = true;
         onDialogueStart?.Invoke();
         _actions.Enable();
 
         _dialogues = new Queue<Dialogue>(dialogues);
-        _callback = callback;
         TypeNextLine();
     }
 
@@ -55,9 +58,8 @@ public class DialogueManager : MonoBehaviour
             _activeDialogueImage = null;
         }
 
+        isActive = false;
         onDialogueEnd?.Invoke();
-        _callback?.Invoke();
-        _callback = null;
     }
 
     void OnNextInput(InputAction.CallbackContext ctx)
@@ -69,6 +71,11 @@ public class DialogueManager : MonoBehaviour
         }
 
         TypeNextLine();
+    }
+
+    void OnSkipinput(InputAction.CallbackContext obj)
+    {
+        StopDialogue();
     }
 
     void TypeNextLine()
@@ -83,7 +90,7 @@ public class DialogueManager : MonoBehaviour
             _activeDialogueImage.gameObject.SetActive(false);
 
         var nextDialogue = _dialogues.Dequeue();
-        _activeDialogueImage = nextDialogue.topOfScreen ? topImage : bottomImage;
+        _activeDialogueImage = topImage;
         _activeDialogueImage.gameObject.SetActive(true);
         _activeDialogueImage.TypeNextLine(nextDialogue);
     }

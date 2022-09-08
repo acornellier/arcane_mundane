@@ -6,10 +6,6 @@ public class ItemObject : ScriptableObject, IInventoryItem
 {
     [SerializeField] Sprite _sprite;
     [SerializeField] InventoryShape _shape;
-    [TextArea(5, 20)] public string _description;
-
-    // ReSharper disable once InconsistentNaming
-    public string Name => name;
 
     public Sprite sprite => _sprite;
 

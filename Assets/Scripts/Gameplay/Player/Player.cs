@@ -13,39 +13,21 @@ public class Player : MonoBehaviour, IDataPersistence
     [SerializeField] float _stackSpeedPercentReduction = 0.1f;
 
     [SerializeField] PlayerAudio _audio;
-    [SerializeField] PlayerInteractors _interactors;
+    [SerializeField] PlayerController _controller;
     [SerializeField] PlayerStack _itemStack;
     [SerializeField] Animations _animations;
 
     public Item topOfStack => _itemStack.Peek();
 
-    PlayerInputActions.PlayerActions _actions;
     AnimancerComponent _animancer;
     Rigidbody2D _body;
 
-    Vector2Int _facingDirection = Vector2Int.up;
+    Vector2Int _facingDirection = Vector2Int.down;
 
     void Awake()
     {
-        _actions = new PlayerInputActions().Player;
-        _actions.Interact.performed += OnInteract;
         _animancer = GetComponent<AnimancerComponent>();
         _body = GetComponent<Rigidbody2D>();
-    }
-
-    void OnEnable()
-    {
-        _actions.Enable();
-    }
-
-    void OnDisable()
-    {
-        _actions.Disable();
-    }
-
-    void Start()
-    {
-        _interactors.UpdateInteractor(_facingDirection);
     }
 
     void FixedUpdate()
@@ -57,16 +39,19 @@ public class Player : MonoBehaviour, IDataPersistence
 
     public void Load(PersistentData data)
     {
-        if (data.player.position == null) return;
+        if (data.player == null) return;
 
-        transform.position = PersistentData.ArrayToVector3(data.player.position);
-        SetFacingDirection(PersistentData.ArrayToVector2Int(data.player.facingDirection));
+        transform.position = data.player.position;
+        SetFacingDirection(data.player.facingDirection);
     }
 
     public void Save(PersistentData data)
     {
-        data.player.position = PersistentData.Vector3ToArr(transform.position);
-        data.player.facingDirection = PersistentData.Vector2IntToArr(_facingDirection);
+        data.player = new Data
+        {
+            position = transform.position,
+            facingDirection = _facingDirection,
+        };
     }
 
     public void Footstep()
@@ -79,15 +64,10 @@ public class Player : MonoBehaviour, IDataPersistence
         _itemStack.DestroyTop();
     }
 
-    void OnInteract(InputAction.CallbackContext _)
-    {
-        _interactors.Interact();
-    }
-
     void UpdateMovement()
     {
-        var moveInput = _actions.Move.ReadValue<Vector2>();
-        var runInput = _actions.Run.IsPressed();
+        var moveInput = _controller.actions.Move.ReadValue<Vector2>();
+        var runInput = _controller.actions.Run.IsPressed();
 
         var adjustedSpeed = _speed - _stackSpeedPercentReduction * _speed * _itemStack.count;
         if (runInput)
@@ -100,7 +80,7 @@ public class Player : MonoBehaviour, IDataPersistence
 
     void UpdateDirection()
     {
-        var moveInput = _actions.Move.ReadValue<Vector2>();
+        var moveInput = _controller.actions.Move.ReadValue<Vector2>();
         if (moveInput == default || moveInput == _facingDirection)
             return;
 
@@ -121,8 +101,6 @@ public class Player : MonoBehaviour, IDataPersistence
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
             _itemStack.transform.localScale = transform.localScale;
         }
-
-        _interactors.UpdateInteractor(_facingDirection);
     }
 
     void UpdateAnimations()
@@ -134,7 +112,7 @@ public class Player : MonoBehaviour, IDataPersistence
 
     DirectionalAnimationSet GetDirectionalAnimationSet()
     {
-        var moveInput = _actions.Move.ReadValue<Vector2>();
+        var moveInput = _controller.actions.Move.ReadValue<Vector2>();
         return _itemStack.Any()
             ? moveInput == default
                 ? _animations.carryIdle
@@ -155,7 +133,7 @@ public class Player : MonoBehaviour, IDataPersistence
 
     public class Data
     {
-        public float[] position;
-        public int[] facingDirection;
+        public Vector3 position;
+        public Vector2Int facingDirection;
     }
 }

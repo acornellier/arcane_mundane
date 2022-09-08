@@ -7,10 +7,12 @@ public class PlayerMouse : MonoBehaviour
     [SerializeField] PlayerStack _playerStack;
     [SerializeField] SpriteRenderer _stackMarker;
 
-    [SerializeField] float _pickUpRange = 2;
+    [SerializeField] float _interactRange = 2;
     [SerializeField] float _dropRange = 3;
 
     Camera _mainCamera;
+
+    readonly Collider2D[] _results = new Collider2D[16];
 
     void Start()
     {
@@ -29,23 +31,43 @@ public class PlayerMouse : MonoBehaviour
         _playerController.onRightClick -= HandleRightClick;
     }
 
+    void Update()
+    {
+        _stackMarker.transform.position = RoundedMousePosition();
+    }
+
     void HandleLeftClick()
     {
         var mousePosition = RoundedMousePosition();
-        if (Vector2.Distance(transform.position, mousePosition) < _pickUpRange)
-            _playerStack.PickUpAt(mousePosition);
+
+        var size = Physics2D.OverlapPointNonAlloc(mousePosition, _results);
+        for (var i = 0; i < size; ++i)
+        {
+            var interactable = _results[i].GetComponent<Interactable>();
+            if (!interactable) continue;
+
+            var col = interactable.GetComponent<Collider2D>();
+            var closestPoint = col.ClosestPoint(transform.position);
+            if (Vector2.Distance(transform.position, closestPoint) > _interactRange)
+                continue;
+
+            interactable.Interact();
+            return;
+        }
+
+        if (Vector2.Distance(transform.position, mousePosition) > _interactRange)
+            return;
+
+        _playerStack.PickUpAt(mousePosition);
     }
 
     void HandleRightClick()
     {
         var mousePosition = RoundedMousePosition();
-        if (Vector2.Distance(transform.position, mousePosition) < _dropRange)
-            _playerStack.DropAt(mousePosition);
-    }
+        if (Vector2.Distance(transform.position, mousePosition) > _dropRange)
+            return;
 
-    void Update()
-    {
-        _stackMarker.transform.position = RoundedMousePosition();
+        _playerStack.DropAt(mousePosition);
     }
 
     Vector2 RoundedMousePosition()

@@ -114,7 +114,7 @@ public class DialogueImage : MonoBehaviour
         var sentence = "";
         foreach (var character in line)
         {
-            if (character is not ('.' or '!' or '?'))
+            if (character is not ('.' or '!' or '?' or ')'))
             {
                 sentence += character;
                 continue;

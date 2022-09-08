@@ -1,10 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
-    PlayerInputActions.PlayerActions _actions;
+    [Inject] DialogueManager _dialogueManager;
+
+    public PlayerInputActions.PlayerActions actions;
 
     public Action<bool> onReveal;
     public Action onLeftClick;
@@ -12,21 +15,35 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        _actions = new PlayerInputActions().Player;
-        _actions.LeftClick.performed += HandleLeftClick;
-        _actions.RightClick.performed += HandleRightClick;
-        _actions.Reveal.started += OnRevealStarted;
-        _actions.Reveal.canceled += OnRevealCancelled;
+        actions = new PlayerInputActions().Player;
+        actions.LeftClick.performed += HandleLeftClick;
+        actions.RightClick.performed += HandleRightClick;
+        actions.Reveal.started += OnRevealStarted;
+        actions.Reveal.canceled += OnRevealCancelled;
     }
 
     void OnEnable()
     {
-        _actions.Enable();
+        EnableControls();
+        _dialogueManager.onDialogueStart += DisableControls;
+        _dialogueManager.onDialogueEnd += EnableControls;
     }
 
     void OnDisable()
     {
-        _actions.Disable();
+        DisableControls();
+        _dialogueManager.onDialogueStart -= DisableControls;
+        _dialogueManager.onDialogueEnd -= EnableControls;
+    }
+
+    void EnableControls()
+    {
+        actions.Enable();
+    }
+
+    void DisableControls()
+    {
+        actions.Disable();
     }
 
     void OnRevealStarted(InputAction.CallbackContext _)

@@ -1,37 +1,35 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class NodeParallel : NodeEvent
 {
-    [SerializeField] List<NodeEvent> nodeEvents;
-    [SerializeField] float timeBetweenStarts;
+    [SerializeField] List<NodeEvent> _nodeEvents;
+    [SerializeField] float _timeBetweenStarts;
 
     void Awake()
     {
-        OnValidate();
-    }
-
-    void OnValidate()
-    {
-        nodeEvents = gameObject.GetComponentsInDirectChildren<NodeEvent>()
+        _nodeEvents = gameObject.GetComponentsInDirectChildren<NodeEvent>()
             .Where(nodeEvent => nodeEvent.gameObject.activeInHierarchy)
             .ToList();
     }
 
-    protected override IEnumerator CO_Run()
+    protected override async UniTask RunInternal(CancellationToken token)
     {
-        foreach (var nodeEvent in nodeEvents)
+        var tasks = new List<UniTask>();
+        foreach (var nodeEvent in _nodeEvents)
         {
-            nodeEvent.Run();
-            if (timeBetweenStarts > 0)
-                yield return new WaitForSeconds(timeBetweenStarts);
+            tasks.Add(nodeEvent.Run(token));
+            if (_timeBetweenStarts > 0)
+                await UniTask.Delay(
+                    TimeSpan.FromSeconds(_timeBetweenStarts),
+                    cancellationToken: token
+                );
         }
 
-        foreach (var nodeEvent in nodeEvents)
-        {
-            yield return new WaitUntil(() => nodeEvent.isDone);
-        }
+        await UniTask.WhenAll(tasks);
     }
 }

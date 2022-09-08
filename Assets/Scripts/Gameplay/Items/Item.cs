@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Item : MonoBehaviour
@@ -77,7 +76,7 @@ public class Item : MonoBehaviour
     {
         if (!itemObject) return;
 
-        name = itemObject.Name;
+        name = itemObject.name;
         GetComponent<SpriteRenderer>().sprite = itemObject.sprite;
     }
 }

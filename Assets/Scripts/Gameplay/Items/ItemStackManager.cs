@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using MoreLinq;
+﻿using System.Linq;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
 
 public class ItemStackManager : IDataPersistence
 {
-    [Inject] Settings _settings;
+    [Inject(Id = InjectId.allItems)] ItemObjectList _allItems;
+    [Inject(Id = InjectId.prefab)] Item _itemPrefab;
+    [Inject(Id = InjectId.prefab)] ItemStack _itemStackPrefab;
 
     static readonly Collider2D[] _results = new Collider2D[32];
 
@@ -35,7 +35,7 @@ public class ItemStackManager : IDataPersistence
         var roundedPosition = Vector2Int.RoundToInt(position);
 
         return Object.Instantiate(
-            _settings.itemStackPrefab,
+            _itemStackPrefab,
             roundedPosition.ToVector3(),
             Quaternion.identity
         );
@@ -50,16 +50,15 @@ public class ItemStackManager : IDataPersistence
 
         foreach (var stackData in data.stacks)
         {
-            var position = PersistentData.ArrayToVector3(stackData.position);
             var stack = Object.Instantiate(
-                _settings.itemStackPrefab,
-                position,
+                _itemStackPrefab,
+                stackData.position,
                 Quaternion.identity
             );
 
             foreach (var itemObjectName in stackData.itemObjectNames)
             {
-                var itemObject = _settings.allItems.FindByName(itemObjectName);
+                var itemObject = _allItems.FindByName(itemObjectName);
 
                 if (itemObject == null)
                 {
@@ -67,7 +66,7 @@ public class ItemStackManager : IDataPersistence
                     return;
                 }
 
-                var item = Object.Instantiate(_settings.itemPrefab);
+                var item = Object.Instantiate(_itemPrefab);
                 item.Initialize(itemObject);
                 stack.Push(item, false);
             }
@@ -82,17 +81,9 @@ public class ItemStackManager : IDataPersistence
         data.stacks = stacks.Select(
             stack => new ItemStack.Data
             {
-                position = PersistentData.Vector3ToArr(stack.transform.position),
+                position = stack.transform.position,
                 itemObjectNames = stack.items.Select(item => item.itemObject.name).ToArray(),
             }
         ).ToArray();
-    }
-
-    [Serializable]
-    public class Settings
-    {
-        public ItemStack itemStackPrefab;
-        public Item itemPrefab;
-        public ItemObjectList allItems;
     }
 }

@@ -1,50 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class NodeSequence : NodeEvent
 {
-    [SerializeField] List<NodeEvent> nodeEvents;
-    [SerializeField] bool playOnStart;
+    [SerializeField] List<NodeEvent> _nodeEvents;
+    [SerializeField] bool _playOnStart;
 
     bool _debugSkip;
 
     void Awake()
     {
-        OnValidate();
-    }
-
-    void Start()
-    {
-        if (playOnStart) Run();
-    }
-
-    void OnValidate()
-    {
-        nodeEvents = gameObject.GetComponentsInDirectChildren<NodeEvent>()
+        _nodeEvents = gameObject.GetComponentsInDirectChildren<NodeEvent>()
             .Where(nodeEvent => nodeEvent.gameObject.activeInHierarchy)
             .ToList();
     }
 
-    protected override IEnumerator CO_Run()
+    void Start()
     {
-        foreach (var nodeEvent in nodeEvents)
-        {
-            nodeEvent.Run();
-            yield return new WaitUntil(
-                () =>
-                {
-                    if (_debugSkip)
-                    {
-                        _debugSkip = false;
-                        nodeEvent.gameObject.SetActive(false);
-                        return true;
-                    }
+        if (_playOnStart)
+            RunAndForget();
+    }
 
-                    return nodeEvent.isDone;
-                }
-            );
+    protected override async UniTask RunInternal(CancellationToken token)
+    {
+        foreach (var nodeEvent in _nodeEvents)
+        {
+            await nodeEvent.Run(token);
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
   m_Name: Cactus6
   m_EditorClassIdentifier: 
-  _sprite: {fileID: -2329129709769316297, guid: 8b7881858b6499b4cb97f9f1463908d3, type: 3}
+  _sprite: {fileID: 3670900413470707729, guid: 8b7881858b6499b4cb97f9f1463908d3, type: 3}
   _shape:
     _width: 1
     _height: 1
