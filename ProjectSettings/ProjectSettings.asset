@@ -549,7 +549,8 @@ PlayerSettings:
   webGLMemoryLinearGrowthStep: 16
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    WebGL: UNITY_2D_SPRITE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

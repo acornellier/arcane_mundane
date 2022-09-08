@@ -23,10 +23,6 @@ public class DialogueManager : MonoBehaviour
         _actions.LeftClick.performed += OnNextInput;
         _actions.RightClick.performed += OnSkipinput;
         _actions.Interact.performed += OnNextInput;
-    }
-
-    void Start()
-    {
         topImage.gameObject.SetActive(false);
     }
 

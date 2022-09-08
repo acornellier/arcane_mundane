@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
-  m_Name: Boot
+  m_Name: Controller2
   m_EditorClassIdentifier: 
-  _sprite: {fileID: -40186678, guid: aaba659d407d74fb4b1b39f4b154c6bf, type: 3}
+  _sprite: {fileID: 409135674, guid: f982988bab70ac44fba9973ae6f46aa6, type: 3}
   _shape:
     _width: 1
     _height: 1
-  _description: 

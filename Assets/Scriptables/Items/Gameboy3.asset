@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
-  m_Name: Cactus0
+  m_Name: Gameboy3
   m_EditorClassIdentifier: 
-  _sprite: {fileID: -1377501624, guid: aaba659d407d74fb4b1b39f4b154c6bf, type: 3}
+  _sprite: {fileID: 3693920910574548508, guid: c8caebd151a8c984899f431e4cbc43cc, type: 3}
   _shape:
     _width: 1
     _height: 1
-  _description: 
