@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca30edf9d1c04cba883865883ac9bcc3, type: 3}
   m_Name: Gameboy4
   m_EditorClassIdentifier: 
-  _sprite: {fileID: -5757995921710180933, guid: c8caebd151a8c984899f431e4cbc43cc, type: 3}
+  _sprite: {fileID: -466085220, guid: c8caebd151a8c984899f431e4cbc43cc, type: 3}
   _shape:
     _width: 1
     _height: 1

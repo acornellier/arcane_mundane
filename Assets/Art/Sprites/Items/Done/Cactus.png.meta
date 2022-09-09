@@ -122,19 +122,19 @@ TextureImporter:
       name: Cactus1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 16
-        height: 16
+        width: 14
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 027513437308d0c44abe4a2cd508d7ca
+      internalID: 1505490590
       vertices: []
       indices: 
       edges: []
@@ -143,19 +143,19 @@ TextureImporter:
       name: Cactus2
       rect:
         serializedVersion: 2
-        x: 16
+        x: 17
         y: 0
-        width: 16
+        width: 14
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 4a8ecdb9663619f4195eb3dffb55d600
+      internalID: -1618891424
       vertices: []
       indices: 
       edges: []
@@ -164,19 +164,19 @@ TextureImporter:
       name: Cactus3
       rect:
         serializedVersion: 2
-        x: 32
+        x: 33
         y: 0
-        width: 16
+        width: 14
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: a6462bf2a427c0540a261590edec41dc
+      internalID: -1536774058
       vertices: []
       indices: 
       edges: []
@@ -185,19 +185,19 @@ TextureImporter:
       name: Cactus4
       rect:
         serializedVersion: 2
-        x: 48
+        x: 49
         y: 0
-        width: 16
+        width: 14
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 57b62e500db050c49b9710e6c3300a8a
+      internalID: 222921528
       vertices: []
       indices: 
       edges: []
@@ -206,19 +206,19 @@ TextureImporter:
       name: Cactus5
       rect:
         serializedVersion: 2
-        x: 64
+        x: 65
         y: 0
-        width: 16
+        width: 14
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 5e8a8d37bb06ca74fa9767889010fe84
+      internalID: 1128461520
       vertices: []
       indices: 
       edges: []
@@ -227,19 +227,19 @@ TextureImporter:
       name: Cactus6
       rect:
         serializedVersion: 2
-        x: 80
+        x: 81
         y: 0
-        width: 16
+        width: 14
         height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 9d480f0e9a30fbd48b83ec5ff3076774
+      internalID: -1993525365
       vertices: []
       indices: 
       edges: []
@@ -255,18 +255,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Cactus1: 0
-      cactus_changes3_2: -27599422
-      Cactus3: 0
-      cactus_changes3_4: 1873693474
-      Cactus6: 0
-      Cactus4: 0
-      cactus_changes3_0: 554051637
-      Cactus5: 0
-      cactus_changes3_3: -1939360233
-      cactus_changes3_1: -265037832
-      Cactus2: 0
-      cactus_changes3_5: -555451761
+      Cactus_1: -1618891424
+      Cactus_3: 222921528
+      Cactus_5: -1993525365
+      Cactus_4: 1128461520
+      Cactus_0: 1505490590
+      Cactus_2: -1536774058
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

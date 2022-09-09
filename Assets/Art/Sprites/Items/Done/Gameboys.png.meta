@@ -119,7 +119,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gameboy1
+      name: Gameboys_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,16 +131,16 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 5ef73eb61512a8d42ac4c6eadd364c9a
+      internalID: -1513120713
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gameboy2
+      name: Gameboys_1
       rect:
         serializedVersion: 2
         x: 16
@@ -152,16 +152,16 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 4c354dd742b338a4b9b38fb6889e83e8
+      internalID: 295319687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gameboy3
+      name: Gameboys_2
       rect:
         serializedVersion: 2
         x: 32
@@ -173,16 +173,16 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 1610dec04cedb1045a810fbc3145ad4f
+      internalID: 551452643
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gameboy4
+      name: Gameboys_3
       rect:
         serializedVersion: 2
         x: 48
@@ -194,16 +194,16 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: d9b6389307712874d8e511ec7ebdf401
+      internalID: -1949040129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gameboy5
+      name: Gameboys_4
       rect:
         serializedVersion: 2
         x: 64
@@ -215,10 +215,10 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 00000000000000000800000000000000
-      internalID: 0
+      spriteID: 176dd1ee755170843b122cc81870f447
+      internalID: -466085220
       vertices: []
       indices: 
       edges: []
@@ -234,16 +234,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      am_items_006_2: 347235103
-      Gameboy1: 0
-      am_items_006_3: 276084263
-      am_items_006_1: -472002279
-      Gameboy3: 0
-      am_items_006_0: -144875041
-      Gameboy4: 0
-      am_items_006_4: 1253774032
-      Gameboy2: 0
-      Gameboy5: 0
+      Gameboys_1: 295319687
+      Gameboys_4: -466085220
+      Gameboys_2: 551452643
+      Gameboys_3: -1949040129
+      Gameboys_0: -1513120713
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

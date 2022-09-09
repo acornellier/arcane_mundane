@@ -8,6 +8,7 @@ public class NodeEventInteractable : Interactable
 
     public override void Interact()
     {
+        d.log("Interact", _nodeEvent, _triggered);
         if (!_nodeEvent || _triggered) return;
 
         _triggered = true;
